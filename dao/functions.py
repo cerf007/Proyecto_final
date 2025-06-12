@@ -7,4 +7,4 @@ class ServiceDao:
         
     def show(self):
         for product in self.service:
-            print(product)
+             print(product)  # Esto imprimirá la representación de cada cliente
