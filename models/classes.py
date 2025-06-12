@@ -8,4 +8,4 @@ class Service:
         self.plan = plan
         
     def __str__(self):
-        return f"Nombre: {self.name} \n Apellido: {self.last_name}, \n Número de teléfono: {self.phone_number} \n Correo electrónico: {self.email} \n Dirección: {self.address} \n Plan: "    
+        return f"Nombre: {self.name} \n Apellido: {self.last_name}, \n Número de teléfono: {self.phone_number} \n Correo electrónico: {self.email} \n Dirección: {self.address} \n Plan: {self.plan} "    
