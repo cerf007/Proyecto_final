@@ -1,7 +1,7 @@
 import models.classes as c
 import dao.functions as f
  
-servicios = f.ServiceDao()
+servicios = f.ClientDao()
 
 def menu():
     print("""
@@ -62,18 +62,24 @@ def registrar_cliente():
         except ValueError:
             print("Carácteres inválidos. Por favor, solo ingrese un numero del 1 al 3")
             
-    registrar = c.Service(nombres, apellidos, numero_telefono, correo_elec, direccion, plan)#Cambiar de tuplas a listas??
+    registrar = c.Client(nombres, apellidos, numero_telefono, correo_elec, direccion, plan)#Cambiar de tuplas a listas??
     servicios.add(registrar)
     
 def buscar_facturas():
     #NOTA: Ahorita no hay creación de factura automática, por lo que solo haré que busque el nombre e imprima el plan
     while True:
-        try:
-            busqueda = input("Ingrese los 2 nombres o los 2 apellidos del cliente a buscar: ").strip()
-            if busqueda.isalpha() and busqueda == servicios.service[c.Service]:
-                print(servicios.service)
-                break
-            else:
-                print("El usuario que usted busca no existe o no fue introducido tal como fue guardado")
-        except ValueError:
-            print("Caracter inválido, ingrese solo carácteres alfabéticos")
+           try:
+               busqueda = input("Ingrese los 2 nombres o los 2 apellidos del cliente a buscar: ").strip()
+               if busqueda.isalpha():
+                   found = False
+                   for cliente in servicios.service:
+                       if cliente.name == busqueda or cliente.last_name == busqueda:
+                           print(cliente)  
+                           found = True
+                           break
+                   if not found:
+                       print("El usuario que usted busca no existe o no fue introducido tal como fue guardado")
+               else:
+                   print("Caracter inválido, ingrese solo carácteres alfabéticos")
+           except ValueError:
+               print("Caracter inválido, ingrese solo carácteres alfabéticos")
