@@ -1,0 +1,38 @@
+# Función para agregar un nuevo requisito
+def agregar_requisito():
+    codigo = input("Introduce el código del requisito (ej. RF-001): ")
+    nombre = input("Introduce el nombre del requisito: ")
+    descripcion = input("Introduce la descripción del requisito: ")
+    responsable = input("Introduce el responsable: ")
+    fecha_inicio = input("Introduce la fecha de inicio (DD/MM/AAAA): ")
+    fecha_fin = input("Introduce la fecha de fin (DD/MM/AAAA): ")
+    estado = input("Introduce el estado (Ej. En proceso, Pendiente): ")
+
+    requisito = {
+        "Código": codigo,
+        "Nombre del requisito": nombre,
+        "Descripción": descripcion,
+        "Responsable": responsable,
+        "Fecha de inicio": fecha_inicio,
+        "Fecha de fin": fecha_fin,
+        "Estado": estado
+    }
+
+    return requisito
+
+# Lista para almacenar todos los requisitos
+requisitos = []
+
+# Agregar requisitos hasta que el usuario decida detenerse
+while True:
+    requisito = agregar_requisito()
+    requisitos.append(requisito)
+
+    continuar = input("¿Deseas agregar otro requisito? (s/n): ")
+    if continuar.lower() != 's':
+        break
+
+# Imprimir los requisitos añadidos
+print("\nRequisitos añadidos:")
+for req in requisitos:
+    print(req)
