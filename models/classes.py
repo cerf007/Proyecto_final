@@ -1,4 +1,4 @@
-class Service:
+class Client:
     def __init__(self, name, last_name, phone_number, email, address, plan):
         self.name = name
         self.last_name = last_name
