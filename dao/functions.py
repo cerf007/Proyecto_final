@@ -1,9 +1,17 @@
-class ServiceDao:
+class ClientDao:
     def __init__(self):
         self.service = []
         
-    def add(self, product):
-        self.service.append(product)
+    def add(self, client):
+        self.service.append(client)
+        
+    def delete(self, client):
+        self.service.remove(client)
+        
+    #def buscar(self, nombre):
+    #    for producto in service:
+    #        if producto.nombre 
+            
         
     def show(self):
         for product in self.service:
