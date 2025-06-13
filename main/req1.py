@@ -25,6 +25,8 @@ def main():
                 registrar_cliente()
             elif opcion == 2:
                 servicios.show()
+            elif opcion == 7:
+                buscar_facturas()
             else:
                 print("Opción inválida. Ingrese solo el número 1 por ahora")
         except ValueError:
@@ -60,6 +62,18 @@ def registrar_cliente():
         except ValueError:
             print("Carácteres inválidos. Por favor, solo ingrese un numero del 1 al 3")
             
-    registrar = c.Service(nombres, apellidos, numero_telefono, correo_elec, direccion, plan)
+    registrar = c.Service(nombres, apellidos, numero_telefono, correo_elec, direccion, plan)#Cambiar de tuplas a listas??
     servicios.add(registrar)
     
+def buscar_facturas():
+    #NOTA: Ahorita no hay creación de factura automática, por lo que solo haré que busque el nombre e imprima el plan
+    while True:
+        try:
+            busqueda = input("Ingrese los 2 nombres o los 2 apellidos del cliente a buscar: ").strip()
+            if busqueda.isalpha() and busqueda == servicios.service[c.Service]:
+                print(servicios.service)
+                break
+            else:
+                print("El usuario que usted busca no existe o no fue introducido tal como fue guardado")
+        except ValueError:
+            print("Caracter inválido, ingrese solo carácteres alfabéticos")
