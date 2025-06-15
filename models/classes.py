@@ -8,4 +8,4 @@ class Client:
         self.plan = plan
         
     def __str__(self):
-        return f"Nombre: {self.name} \n Apellido: {self.last_name}, \n Número de teléfono: {self.phone_number} \n Correo electrónico: {self.email} \n Dirección: {self.address} \n Plan: {self.plan} "    
+        return f"NOMBRE \t| APELLIDO \t| NÚMERO TELEFÓNICO \t| CORREO ELECTRÓNICO \t| DIRECCIÓN \t| PLAN \n{self.name} \t| {self.last_name} \t| {self.phone_number} \t| {self.email} \t| {self.address} \t| {self.plan}"  
