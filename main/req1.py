@@ -99,7 +99,7 @@ def buscar_facturas():
     while True:
            try:
                busqueda = input("Ingrese los 2 nombres o los 2 apellidos del cliente a buscar: ").strip()
-               if busqueda.isalpha():
+               if all(part.isalpha() for part in busqueda.split()):
                    found = False
                    for cliente in servicios.service:
                        if cliente.name == busqueda or cliente.last_name == busqueda:
