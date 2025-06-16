@@ -44,7 +44,7 @@ def registrar_cliente():
     while True:
         try:
             nombres = input("Ingrese los 2 nombres del cliente: ").strip()
-            if nombres.isalpha():
+            if all(part.isalpha() for part in nombres.split()):
                 break
             else:
                 print("Los nombres solo deben contener caracteres alfabéticas")
@@ -54,7 +54,7 @@ def registrar_cliente():
     while True:
         try:
             apellidos = input("Ingrese los 2 apellidos del cliente: ").strip()
-            if apellidos.isalpha():
+            if all(part.isalpha() for part in apellidos.split()):
                 break
             else:
                 print("Los apeellidos solo deben de contener caracteres alfabéticos ")
