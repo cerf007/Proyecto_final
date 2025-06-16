@@ -41,8 +41,26 @@ def main():
     
 
 def registrar_cliente():
-    nombres = input("Ingrese los 2 nombres del cliente: ").strip()
-    apellidos = input("Ingrese los 2 apellidos del cliente: ").strip()
+    while True:
+        try:
+            nombres = input("Ingrese los 2 nombres del cliente: ").strip()
+            if nombres.isalpha():
+                break
+            else:
+                print("Los nombres solo deben contener caracteres alfabéticas")
+        except ValueError:
+            print("Error, caracteres inválidos")
+            
+    while True:
+        try:
+            apellidos = input("Ingrese los 2 apellidos del cliente: ").strip()
+            if apellidos.isalpha():
+                break
+            else:
+                print("Los apeellidos solo deben de contener caracteres alfabéticos ")
+        except  ValueError:
+            print("Error, caracteres inválidos")
+            
     while True:
         try:
             numero_telefono_str = input("Ingrese el número telefónico del cliente [8 dígitos, sin espacios de separación]: ") 
@@ -108,3 +126,6 @@ def eliminar_cliente():
                 print("Cliente no encontrado.")
         except ValueError:
             print("Entrada no válida, intenté de nuevo")
+            
+#def editar_cliente():
+    
