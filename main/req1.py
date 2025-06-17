@@ -169,3 +169,34 @@ def editar_nuevo_cliente():
                 print("Los apellidos solo deben contener caracteres alfabéticas")
         except ValueError:
             print("Caracter inválido, ingrese solo carácteres alfabéticos")
+            
+    while True:
+        try:
+            nuevo_numero_telefono = input("Ingrese el número telefónico del cliente [8 dígitos, sin espacios de separación]: ") 
+            if len(nuevo_numero_telefono) == 8 and nuevo_numero_telefono.isdigit:
+                nuevo_numero_telefono = int(nuevo_numero_telefono)
+                break
+            else:
+                    print("Numero de telefono inválido. Debe de ser de 8 números y sin espacios")
+        except ValueError:
+                print("Carácteres inválidos. Por favor, solo ingrese numeros")
+                
+    nuevo_correo_elec = input("Ingrese el nuevo correo electrónico del cliente: ").strip()
+    nuevo_direccion = input("Ingrese la nueva dirección del cliente: ").strip()
+                
+    while True:
+        try:
+            nuevo_plan = int(input("Ingrese el nuevo plan elegido por el cliente [1 = Plan básico, 2 = Plan Pro, 3 = Plan Premium]: "))
+            
+            if 1 <= nuevo_plan <= 3:
+                if nuevo_plan == 1:
+                    nuevo_plan = "Básico"
+                elif nuevo_plan == 2:
+                    nuevo_plan = "Pro"
+                elif nuevo_plan == 3:
+                    nuevo_plan = "Premium"
+                break
+            else:
+                print("Por favor, ingrese un numero del 1 al 3")
+        except ValueError:
+            print("Carácteres inválidos. Por favor, solo ingrese un numero del 1 al 3")
