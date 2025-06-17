@@ -31,7 +31,7 @@ def main():
             elif opcion == 4:
                eliminar_cliente() 
             elif opcion == 8:
-                buscar_facturas()
+                print("En proceso de mejora")
             else:
                 print("Opción inválida. Ingrese solo el número 1 por ahora")
         except ValueError:
@@ -94,24 +94,24 @@ def registrar_cliente():
     registrar = c.Client(nombres, apellidos, numero_telefono, correo_elec, direccion, plan)
     servicios.add(registrar)
     
-def buscar_facturas():
-    #NOTA: Ahorita no hay creación de factura automática, por lo que solo haré que busque el nombre e imprima el plan
-    while True:
-           try:
-               busqueda = input("Ingrese los 2 nombres o los 2 apellidos del cliente a buscar: ").strip()
-               if all(part.isalpha() for part in busqueda.split()):
-                   found = False
-                   for cliente in servicios.service:
-                       if cliente.name == busqueda or cliente.last_name == busqueda:
-                           print(cliente)  
-                           found = True
-                           break
-                   if not found:
-                       print("El usuario que usted busca no existe o no fue introducido tal como fue guardado")
-               else:
-                   print("Caracter inválido, ingrese solo carácteres alfabéticos")
-           except ValueError:
-               print("Caracter inválido, ingrese solo carácteres alfabéticos")
+#def buscar_facturas():
+#    #NOTA: Ahorita no hay creación de factura automática, por lo que solo haré que busque el nombre e imprima el plan
+#    while True:
+#           try:
+#               busqueda = input("Ingrese los 2 nombres o los 2 apellidos del cliente a buscar: ").strip()
+#               if all(part.isalpha() for part in busqueda.split()):
+#                   found = False
+#                   for cliente in servicios.service:
+#                       if cliente.name == busqueda or cliente.last_name == busqueda:
+#                           print(cliente)  
+#                           found = True
+#                           break
+#                   if not found:
+#                       print("El usuario que usted busca no existe o no fue introducido tal como fue guardado")
+#               else:
+#                   print("Caracter inválido, ingrese solo carácteres alfabéticos")
+#           except ValueError:
+#               print("Caracter inválido, ingrese solo carácteres alfabéticos")
                
 def eliminar_cliente():
     while True:
