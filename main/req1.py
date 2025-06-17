@@ -141,7 +141,9 @@ def editar_cliente():
                         print(cliente)
                         editar_nuevo_cliente(cliente)
                         break
-                   if not found:
+                   if found:
+                       break
+                   else:
                        print("El usuario que usted busca no existe o no fue introducido tal como fue guardado")
                else:
                    print("Caracter inválido, ingrese solo carácteres alfabéticos")
@@ -183,7 +185,7 @@ def editar_nuevo_cliente(cliente):
             nuevo_numero_telefono = input("Ingrese el número telefónico del cliente [8 dígitos, sin espacios de separación]: ") 
             if nuevo_numero_telefono == "":
                 break
-            elif len(nuevo_numero_telefono) == 8 and nuevo_numero_telefono.isdigit:
+            elif len(nuevo_numero_telefono) == 8 and nuevo_numero_telefono.isdigit():
                 cliente.phone_number = int(nuevo_numero_telefono)
                 break
             else:
@@ -200,7 +202,7 @@ def editar_nuevo_cliente(cliente):
         cliente.adress = nuevo_direccion
                 
     while True:
-        nuevo_plan = int(input("Ingrese el nuevo plan elegido por el cliente [1 = Plan básico, 2 = Plan Pro, 3 = Plan Premium]: "))
+        nuevo_plan = input("Ingrese el nuevo plan elegido por el cliente [1 = Plan básico, 2 = Plan Pro, 3 = Plan Premium]: ")
         if nuevo_plan == "":
                 break     
         try:
