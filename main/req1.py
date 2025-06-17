@@ -199,7 +199,7 @@ def editar_nuevo_cliente(cliente):
         
     nuevo_direccion = input("Ingrese la nueva dirección del cliente: ").strip()
     if nuevo_direccion:
-        cliente.adress = nuevo_direccion
+        cliente.address = nuevo_direccion
                 
     while True:
         nuevo_plan = input("Ingrese el nuevo plan elegido por el cliente [1 = Plan básico, 2 = Plan Pro, 3 = Plan Premium]: ")
@@ -214,6 +214,7 @@ def editar_nuevo_cliente(cliente):
                     nuevo_plan = "Pro"
                 elif nuevo_plan == 3:
                     nuevo_plan = "Premium"
+                cliente.plan = nuevo_plan
                 break
             else:
                 print("Por favor, ingrese un numero del 1 al 3")
