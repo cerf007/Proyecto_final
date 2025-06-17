@@ -145,3 +145,27 @@ def editar_cliente():
                    print("Caracter inválido, ingrese solo carácteres alfabéticos")
            except ValueError:
                print("Caracter inválido, ingrese solo carácteres alfabéticos")
+
+
+def editar_nuevo_cliente():
+    #Aqui es copiar la estructura base de registrar_cliente para la validacción de datos
+    while True:
+        try:
+            nuevo_nombre = input("Ingrese los 2 nuevos nombres del cliente: ").strip()
+            if  all(part.isalpha() for part in nuevo_nombre.split()):
+                break
+            else:
+                print("Los nombres solo deben contener caracteres alfabéticas")
+        except ValueError:
+            print("Error, caracteres inválidos")
+        
+        
+    while True:
+        try:
+            nuevo_apellido = input("Ingrese los 2 nuevos apellidos del cliente: ")
+            if  all(part.isalpha() for part in nuevo_apellido.split()):
+                break
+            else:
+                print("Los apellidos solo deben contener caracteres alfabéticas")
+        except ValueError:
+            print("Caracter inválido, ingrese solo carácteres alfabéticos")
