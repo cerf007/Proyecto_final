@@ -139,8 +139,7 @@ def editar_cliente():
                         found = True
                         print("Cliente encontrado:")
                         print(cliente)
-                        editar_nuevo_cliente()
-                        found = True
+                        editar_nuevo_cliente(cliente)
                         break
                    if not found:
                        print("El usuario que usted busca no existe o no fue introducido tal como fue guardado")
@@ -150,12 +149,15 @@ def editar_cliente():
                print("Caracter inválido, ingrese solo carácteres alfabéticos")
 
 
-def editar_nuevo_cliente():
+def editar_nuevo_cliente(cliente):
     #Aqui es copiar la estructura base de registrar_cliente para la validacción de datos
     while True:
         try:
             nuevo_nombre = input("Ingrese los 2 nuevos nombres del cliente: ").strip()
-            if  all(part.isalpha() for part in nuevo_nombre.split()):
+            if nuevo_nombre == "":
+                break #Agregue esto si quiero mantener el nombre igual, ahora es agregar a todos
+            elif  all(part.isalpha() for part in nuevo_nombre.split()):
+                cliente.name = nuevo_nombre
                 break
             else:
                 print("Los nombres solo deben contener caracteres alfabéticas")
@@ -166,7 +168,10 @@ def editar_nuevo_cliente():
     while True:
         try:
             nuevo_apellido = input("Ingrese los 2 nuevos apellidos del cliente: ")
-            if  all(part.isalpha() for part in nuevo_apellido.split()):
+            if nuevo_apellido == "":
+                break
+            elif  all(part.isalpha() for part in nuevo_apellido.split()):
+                cliente.last_name = nuevo_apellido
                 break
             else:
                 print("Los apellidos solo deben contener caracteres alfabéticas")
@@ -176,8 +181,10 @@ def editar_nuevo_cliente():
     while True:
         try:
             nuevo_numero_telefono = input("Ingrese el número telefónico del cliente [8 dígitos, sin espacios de separación]: ") 
-            if len(nuevo_numero_telefono) == 8 and nuevo_numero_telefono.isdigit:
-                nuevo_numero_telefono = int(nuevo_numero_telefono)
+            if nuevo_numero_telefono == "":
+                break
+            elif len(nuevo_numero_telefono) == 8 and nuevo_numero_telefono.isdigit:
+                cliente.phone_number = int(nuevo_numero_telefono)
                 break
             else:
                     print("Numero de telefono inválido. Debe de ser de 8 números y sin espacios")
@@ -185,12 +192,19 @@ def editar_nuevo_cliente():
                 print("Carácteres inválidos. Por favor, solo ingrese numeros")
                 
     nuevo_correo_elec = input("Ingrese el nuevo correo electrónico del cliente: ").strip()
+    if nuevo_correo_elec:
+        cliente.email = nuevo_correo_elec
+        
     nuevo_direccion = input("Ingrese la nueva dirección del cliente: ").strip()
+    if nuevo_direccion:
+        cliente.adress = nuevo_direccion
                 
     while True:
+        nuevo_plan = int(input("Ingrese el nuevo plan elegido por el cliente [1 = Plan básico, 2 = Plan Pro, 3 = Plan Premium]: "))
+        if nuevo_plan == "":
+                break     
         try:
-            nuevo_plan = int(input("Ingrese el nuevo plan elegido por el cliente [1 = Plan básico, 2 = Plan Pro, 3 = Plan Premium]: "))
-            
+            nuevo_plan = int(nuevo_plan)
             if 1 <= nuevo_plan <= 3:
                 if nuevo_plan == 1:
                     nuevo_plan = "Básico"
@@ -203,3 +217,5 @@ def editar_nuevo_cliente():
                 print("Por favor, ingrese un numero del 1 al 3")
         except ValueError:
             print("Carácteres inválidos. Por favor, solo ingrese un numero del 1 al 3")
+            
+    print("Cliente actualizado con éxito.")
