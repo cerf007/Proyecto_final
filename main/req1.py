@@ -136,9 +136,12 @@ def editar_cliente():
                    found = False
                    for cliente in servicios.service:
                        if cliente.name == busqueda or cliente.last_name == busqueda:
-                           
-                           found = True
-                           break
+                        found = True
+                        print("Cliente encontrado:")
+                        print(cliente)
+                        editar_nuevo_cliente()
+                        found = True
+                        break
                    if not found:
                        print("El usuario que usted busca no existe o no fue introducido tal como fue guardado")
                else:
