@@ -27,7 +27,7 @@ def main():
             elif opcion == 2:
                 servicios.show()
             elif opcion == 3:
-                print("Falta este apartado")
+                editar_cliente()
             elif opcion == 4:
                eliminar_cliente() 
             elif opcion == 8:
@@ -127,5 +127,21 @@ def eliminar_cliente():
         except ValueError:
             print("Entrada no válida, intenté de nuevo")
             
-#def editar_cliente():
-    
+def editar_cliente():
+    #Decidi usar copiar y pegar la estructura base de la fución buscar_facturas (La función cambiara después)
+     while True:
+           try:
+               busqueda = input("Ingrese los 2 nombres o los 2 apellidos del cliente a buscar: ").strip()
+               if all(part.isalpha() for part in busqueda.split()):
+                   found = False
+                   for cliente in servicios.service:
+                       if cliente.name == busqueda or cliente.last_name == busqueda:
+                           
+                           found = True
+                           break
+                   if not found:
+                       print("El usuario que usted busca no existe o no fue introducido tal como fue guardado")
+               else:
+                   print("Caracter inválido, ingrese solo carácteres alfabéticos")
+           except ValueError:
+               print("Caracter inválido, ingrese solo carácteres alfabéticos")
