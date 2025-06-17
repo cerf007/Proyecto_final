@@ -64,7 +64,7 @@ def registrar_cliente():
     while True:
         try:
             numero_telefono_str = input("Ingrese el número telefónico del cliente [8 dígitos, sin espacios de separación]: ") 
-            if len(numero_telefono_str) == 8 and numero_telefono_str.isdigit:
+            if len(numero_telefono_str) == 8 and numero_telefono_str.isdigit():
                 numero_telefono = int(numero_telefono_str)
                 break
             else:
