@@ -1,5 +1,6 @@
 import models.classes as c
 import dao.functions as f
+import datetime
  
 servicios = f.ClientDao()
 
@@ -28,6 +29,8 @@ def main():
                 servicios.show()
             elif opcion == 3:
                 editar_cliente()
+            elif opcion == 5:
+                registrar_pago()
             elif opcion == 4:
                eliminar_cliente() 
             elif opcion == 8:
@@ -60,6 +63,18 @@ def registrar_cliente():
                 print("Los apeellidos solo deben de contener caracteres alfabéticos ")
         except  ValueError:
             print("Error, caracteres inválidos")
+    
+    #agregando cédula como identificador
+    while True:
+        try:
+            cedula_str = input("Ingrese la cédula del cliente [Formato = xxx-xxxxxx-xxxx, 13 números]: ").strip()
+            if len(cedula_str) == 15 and cedula_str.isdigit():
+                break
+            else:
+                print("Numero de cédula inválido. El formato introducido es inválido")
+        except ValueError:
+            print("Caracteres inválidos. Por favor, solo ingrese numeros")
+        
             
     while True:
         try:
@@ -91,7 +106,7 @@ def registrar_cliente():
         except ValueError:
             print("Carácteres inválidos. Por favor, solo ingrese un numero del 1 al 3")
             
-    registrar = c.Client(nombres, apellidos, numero_telefono, correo_elec, direccion, plan)
+    registrar = c.Client(nombres, apellidos, cedula_str ,numero_telefono, correo_elec, direccion, plan)
     servicios.add(registrar)
     
 #def buscar_facturas():
@@ -222,3 +237,10 @@ def editar_nuevo_cliente(cliente):
             print("Carácteres inválidos. Por favor, solo ingrese un numero del 1 al 3")
             
     print("Cliente actualizado con éxito.")
+    
+def registrar_pago(cliente):
+    while True:
+        try:
+            buscar = input("")
+        except ValueError:
+            print("No hay nada, solo estoy probando")
