@@ -67,8 +67,8 @@ def registrar_cliente():
     #agregando cédula como identificador
     while True:
         try:
-            cedula_str = input("Ingrese la cédula del cliente [Formato = xxx-xxxxxx-xxxx, 13 números]: ").strip()
-            if len(cedula_str) == 15 and cedula_str.isdigit():
+            cedula_str = input("Ingrese la cédula del cliente [Formato = xxx-xxxxxx-xxxx, 13 números y caracter alfabtico al final]: ").strip()
+            if (len(cedula_str) == 16 and cedula_str[3] == '-' and cedula_str[10] == '-' and cedula_str[:-1].replace('-', '').isdigit() and cedula_str[-1].isalpha()):
                 break
             else:
                 print("Numero de cédula inválido. El formato introducido es inválido")
