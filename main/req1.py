@@ -40,9 +40,6 @@ def main():
         except ValueError:
             print("Entrada no válida. Por favor, ingrese un número.")
 
-
-    
-
 def registrar_cliente():
     while True:
         try:
@@ -147,7 +144,7 @@ def editar_cliente():
      while True:
            try:
                busqueda = input("Ingrese los 2 nombres, los 2 apellidos del cliente a buscar o la cedula: ").strip()
-               if all(part.isalpha() for part in busqueda.split()):
+               if busqueda:
                    found = False
                    for cliente in servicios.service:
                        if cliente.name == busqueda or cliente.last_name == busqueda or cliente.identification == busqueda:
