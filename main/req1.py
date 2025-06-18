@@ -67,13 +67,13 @@ def registrar_cliente():
     #agregando cédula como identificador
     while True:
         try:
-            cedula_str = input("Ingrese la cédula del cliente [Formato = xxx-xxxxxx-xxxx, 13 números y caracter alfabtico al final]: ").strip()
+            cedula_str = input("Ingrese la cédula del cliente [Formato = xxx-xxxxxx-xxxx, 13 números y caracter alfabético al final]: ").strip()
             if (len(cedula_str) == 16 and cedula_str[3] == '-' and cedula_str[10] == '-' and cedula_str[:-1].replace('-', '').isdigit() and cedula_str[-1].isalpha()):
                 break
             else:
                 print("Numero de cédula inválido. El formato introducido es inválido")
         except ValueError:
-            print("Caracteres inválidos. Por favor, solo ingrese numeros")
+            print("Caracteres inválidos. Por favor, solo ingrese el formato adecuado [Formato: xxx-xxxxxx-xxxx, 13 números y caracter alfabético al final]")
         
             
     while True:
@@ -146,11 +146,11 @@ def editar_cliente():
     #Decidi usar copiar y pegar la estructura base de la fución buscar_facturas (La función cambiara después)
      while True:
            try:
-               busqueda = input("Ingrese los 2 nombres o los 2 apellidos del cliente a buscar: ").strip()
+               busqueda = input("Ingrese los 2 nombres, los 2 apellidos del cliente a buscar o la cedula: ").strip()
                if all(part.isalpha() for part in busqueda.split()):
                    found = False
                    for cliente in servicios.service:
-                       if cliente.name == busqueda or cliente.last_name == busqueda:
+                       if cliente.name == busqueda or cliente.last_name == busqueda or cliente.identification == busqueda:
                         found = True
                         print("Cliente encontrado:")
                         print(cliente)
@@ -194,7 +194,19 @@ def editar_nuevo_cliente(cliente):
                 print("Los apellidos solo deben contener caracteres alfabéticas")
         except ValueError:
             print("Caracter inválido, ingrese solo carácteres alfabéticos")
-            
+        
+    while True:
+        try:
+            nueva_cedula = input("Ingrese la nueva cedula del cliente en [Formato: xxx-xxxxxx-xxxx, 13 números y caracter alfabético al final]: ")
+            if nueva_cedula == "":
+                break
+            elif len(nueva_cedula) == 16 and nueva_cedula[3] == '-' and nueva_cedula[10] == '-' and nueva_cedula[:-1].replace('-', '').isdigit() and nueva_cedula[-1].isalpha():
+                break
+            else:
+                print("La nueva cédula no sigue el formato indicado [Formato: xxx-xxxxxx-xxxx, 13 números y caracter alfabético al final]")
+        except ValueError:
+            print("Caracteres inválidos, por favor ingrese el formato adecuado [Formato: xxx-xxxxxx-xxxx, 13 números y caracter alfabético al final]")
+        
     while True:
         try:
             nuevo_numero_telefono = input("Ingrese el número telefónico del cliente [8 dígitos, sin espacios de separación]: ") 
