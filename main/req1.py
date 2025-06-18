@@ -35,6 +35,9 @@ def main():
                eliminar_cliente() 
             elif opcion == 8:
                 print("En proceso de mejora")
+            elif opcion == 9:
+                print("Saliendo....")
+                break
             else:
                 print("Opción inválida. Ingrese solo el número 1 por ahora")
         except ValueError:
@@ -75,7 +78,7 @@ def registrar_cliente():
             
     while True:
         try:
-            numero_telefono_str = input("Ingrese el número telefónico del cliente [8 dígitos, sin espacios de separación]: ") 
+            numero_telefono_str = input("Ingrese el número telefónico del cliente [8 dígitos, sin espacios de separación]: ").strip()
             if len(numero_telefono_str) == 8 and numero_telefono_str.isdigit():
                 numero_telefono = int(numero_telefono_str)
                 break
@@ -157,6 +160,7 @@ def editar_cliente():
                        break
                    else:
                        print("El usuario que usted busca no existe o no fue introducido tal como fue guardado")
+                       break
                else:
                    print("Caracter inválido, ingrese solo carácteres alfabéticos")
            except ValueError:
