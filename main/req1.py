@@ -139,6 +139,7 @@ def eliminar_cliente():
                 break
             else:
                 print("Cliente no encontrado.")
+                break
         except ValueError:
             print("Entrada no válida, intenté de nuevo")
             
