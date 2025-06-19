@@ -255,6 +255,22 @@ def editar_nuevo_cliente(cliente):
 def registrar_pago(cliente):
     while True:
         try:
-            buscar = input("")
+            busqueda = input("Ingrese los 2 nombres, los 2 apellidos del cliente a buscar o la cedula:").strip()
+            if busqueda:
+                found = False
+                for cliente in servicios.service:
+                    if cliente.name == busqueda or cliente.last_name == busqueda or cliente.identification == busqueda:
+                        found = True
+                        print("Cliente encontrado:")
+                        print(cliente.name, cliente.last_name, cliente.identification)
+                        break
+                if found:
+                       break
+                else:
+                       print("El usuario que usted busca no existe o no fue introducido tal como fue guardado")
+                       break
+            else:
+                   print("Caracter inválido, ingrese solo carácteres alfabéticos")
         except ValueError:
-            print("No hay nada, solo estoy probando")
+               print("Caracter inválido, ingrese solo carácteres alfabéticos")
+            
