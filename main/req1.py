@@ -263,6 +263,7 @@ def registrar_pago():
                         found = True
                         print("Cliente encontrado:")
                         print(cliente.name, cliente.last_name, cliente.identification, cliente.plan)
+                        registrar_pago_datos
                         break
                 if found:
                        break
@@ -274,3 +275,37 @@ def registrar_pago():
         except ValueError:
                print("Caracter inválido, ingrese solo carácteres alfabéticos")
             
+def registrar_pago_datos(cliente):
+    while True:
+        try:
+            pago = float(input("Ingrese el pago realizado por el cliente en córdobas: ").strip())
+            if cliente.plan == "Básico":
+                if pago < 800:
+                    print(f"El pago realizado es insuficiente para el plan {cliente.plan}, debe ser minímo de 800")
+                    break
+                elif pago >= 800:
+                    cambio = pago -800
+                else:
+                    print("Invalido")
+            elif cliente.plan == "Pro":
+                if pago < 1500:
+                    print(f"El pago realizado es insuficiente para el plan {cliente.plan}, debe minimo ser de 1500")
+                    break
+                elif pago >= 1500:
+                    cambio = pago - 1500
+                else:
+                    print("Invalido")
+            elif cliente.plan == "Premium":
+                if pago < 2000:
+                    print(f"El pago realizado es insuficiente para el plan {cliente.plan}, debe minimo ser de 2000")
+                    break
+                elif pago >= 2000:
+                    cambio = pago - 2000
+                else:
+                    print("Inválido")
+                              
+        except ValueError:
+            print("Falta")
+            
+    registrar = c.Client(cliente.name, cliente.last_name, cliente.identification, pago, cambio)
+    c.Client.self.pagos.add(registrar)
