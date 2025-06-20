@@ -67,7 +67,7 @@ def registrar_cliente():
     #agregando cédula como identificador
     while True:
         try:
-            cedula_str = input("Ingrese la cédula del cliente [Formato = xxx-xxxxxx-xxxx, 13 números y caracter alfabético al final]: ").strip()
+            cedula_str = input("Ingrese la cédula del cliente [Formato = xxx-xxxxx-xxxx, 13 números y caracter alfabético al final]: ").strip()
             if (len(cedula_str) == 16 and cedula_str[3] == '-' and cedula_str[10] == '-' and cedula_str[:-1].replace('-', '').isdigit() and cedula_str[-1].isalpha()):
                 break
             else:
@@ -89,24 +89,9 @@ def registrar_cliente():
             
     correo_elec = input("Ingrese el correo electrónico del cliente: ").strip()
     direccion = input("Ingrese la dirección del cliente: ").strip()
-    while True:
-        try:
-            plan = int(input("Ingrese el plan elegido por el cliente [1 = Plan básico, 2 = Plan Pro, 3 = Plan Premium]: "))
+    
             
-            if 1 <= plan <= 3:
-                if plan == 1:
-                    plan = "Básico"
-                elif plan == 2:
-                    plan = "Pro"
-                elif plan == 3:
-                    plan = "Premium"
-                break
-            else:
-                print("Por favor, ingrese un numero del 1 al 3")
-        except ValueError:
-            print("Carácteres inválidos. Por favor, solo ingrese un numero del 1 al 3")
-            
-    registrar = c.Client(nombres, apellidos, cedula_str ,numero_telefono, correo_elec, direccion, plan)
+    registrar = c.Client(nombres, apellidos, cedula_str ,numero_telefono, correo_elec, direccion)
     servicios.add(registrar)
     
 #def buscar_facturas():
@@ -263,7 +248,7 @@ def registrar_pago():
                         found = True
                         print("Cliente encontrado:")
                         print(cliente.name, cliente.last_name, cliente.identification, cliente.plan)
-                        registrar_pago_datos
+                        registrar_pago_datos(cliente) #Faltaba el argumento
                         break
                 if found:
                        break
@@ -274,6 +259,10 @@ def registrar_pago():
                    print("Caracter inválido, ingrese solo carácteres alfabéticos")
         except ValueError:
                print("Caracter inválido, ingrese solo carácteres alfabéticos")
+               
+        registrar_pago_datos(cliente)
+        cliente.display_payments()
+        break
             
 def registrar_pago_datos(cliente):
     while True:
@@ -303,9 +292,10 @@ def registrar_pago_datos(cliente):
                     cambio = pago - 2000
                 else:
                     print("Inválido")
+                    
+            cliente.pagos.append({"pago": pago, "cambio": cambio, "fecha": datetime.date.today()})
+            print("Pago registrado con éxito.")
+            break
                               
         except ValueError:
             print("Falta")
-            
-    registrar = c.Client(cliente.name, cliente.last_name, cliente.identification, pago, cambio)
-    c.Client.self.pagos.add(registrar)
