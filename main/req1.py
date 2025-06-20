@@ -245,38 +245,18 @@ def registrar_pago():
         cliente.display_payments()
         break
             
-def registrar_pago_datos(cliente):
+def registrar_pago_datos(cliente): 
     while True:
         try:
-            pago = float(input("Ingrese el pago realizado por el cliente en córdobas: ").strip())
-            if cliente.plan == "Básico":
-                if pago < 800:
-                    print(f"El pago realizado es insuficiente para el plan {cliente.plan}, debe ser minímo de 800")
+            pago = input("Ingrese el pago realizado por el cliente en córdobas: ").strip()
+            if pago.isdigit():
+                if pago < 737:
+                    print("Pago insuficiente, el pago minimo del servicio es de 737 cordobas")
                     break
-                elif pago >= 800:
-                    cambio = pago -800
-                else:
-                    print("Invalido")
-            elif cliente.plan == "Pro":
-                if pago < 1500:
-                    print(f"El pago realizado es insuficiente para el plan {cliente.plan}, debe minimo ser de 1500")
-                    break
-                elif pago >= 1500:
-                    cambio = pago - 1500
-                else:
-                    print("Invalido")
-            elif cliente.plan == "Premium":
-                if pago < 2000:
-                    print(f"El pago realizado es insuficiente para el plan {cliente.plan}, debe minimo ser de 2000")
-                    break
-                elif pago >= 2000:
-                    cambio = pago - 2000
-                else:
-                    print("Inválido")
-                    
-            cliente.pagos.append({"pago": pago, "cambio": cambio, "fecha": datetime.date.today()})
-            print("Pago registrado con éxito.")
-            break
-                              
+                elif pago >= 737:
+                    cambio =  pago - 737
+            else:
+                print("Solo ingrese números")
+            
         except ValueError:
-            print("Falta")
+            print("Error, ingrese solamente números")
