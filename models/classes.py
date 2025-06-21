@@ -17,8 +17,8 @@ class Client:
     #        print(f"Pago: {pago['pago']}, Cambio: {pago['cambio']}, Fecha: {pago['fecha']}")
     
 class Bill:
-    def __init__(self, payment, change ,description, date, code):
-        self.client = Client
+    def __init__(self, client,payment, change ,description, date, code):
+        self.client = client
         self.payment = payment
         self.change = change
         self.description = description
