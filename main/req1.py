@@ -3,7 +3,7 @@ import dao.functions as f
 import datetime
  
 servicios = f.ClientDao()
-registo_factura = f.BillDao()
+registro_factura = f.BillDao()
 
 def menu():
     print("""
@@ -14,9 +14,8 @@ def menu():
           4.Eliminar Cliente
           5.Registrar pagos
           6.Generar reporte financiero
-          7.Impresión de facturas
-          8.Busqueda de facturas
-          9.Salir
+          7.Búsqueda e impresión de facturas
+          8.Salir
           """)
     
 def main():
@@ -35,10 +34,8 @@ def main():
             elif opcion == 5:
                 registrar_pago()
             elif opcion == 7:
-                registo_factura.show()
+                registro_factura.show()
             elif opcion == 8:
-                print("En proceso de mejora")
-            elif opcion == 9:
                 print("Saliendo....")
                 break
             else:
@@ -123,7 +120,7 @@ def eliminar_cliente():
             client_to_delete = next((client for client in servicios.service if client.name == nombre_cliente), None)
             if client_to_delete:
                 servicios.delete(client_to_delete)
-                registo_factura.delete(client_to_delete)
+                registro_factura.delete(client_to_delete)
                 print(f"Cliente {nombre_cliente} eliminado.")
                 break
             else:
@@ -247,32 +244,30 @@ def registrar_pago():
 def registrar_pago_datos(cliente): 
     while True:
         try:
-            pago = input("Ingrese el pago realizado por el cliente en córdobas: ").strip()
-            if pago.isnumeric():
-                pago = float(pago)
-                if pago < 737:
-                    print("Pago insuficiente, el pago minimo del servicio es de 737 cordobas")
-                    break
-                else: 
-                    cambio =  pago - 737
-                    descripcion = "Pago de servicio" 
-                    fecha = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-                    codigo_factura = f"FAC-{cliente.identification}-{fecha.replace(" ", "")}"#Hace que la factura sea unica al concantenar la cedula del cliente y la fecha con lo guiones eliminados
-                    
-                    
-                    factura = c.Bill(cliente, pago, cambio, descripcion, fecha, codigo_factura)
-                    registo_factura.add(factura)
-                    
-                    cliente.pagos.append({
-                        'pago': pago,
-                        'cambio': cambio,  #En esta parte hace que el pago, cambio y fecha sean agregados en la lista llamada pago en en el models llamado cliente
-                        'fecha': fecha
-                    })
-                    
-                    print(f"Pago registrado. Cambio: {cambio} córdobas. Factura generada: {codigo_factura}")
-                    break
-            else:
-                print("Ingrese caracteres númericos")
+            pago_str = input("Ingrese el pago realizado por el cliente en córdobas: ").strip()
+            pago= float (pago_str)
+            if pago < 737:
+                print("Pago insuficiente, el pago minimo del servicio es de 737 cordobas")
+                break
+            else: 
+                pago = round(pago, 2) #Voy a mandarlo a redondear hasta 2 decimales, por que demasiados en la lista
+                cambio =  pago - 737
+                cambio = round(cambio, 2) #Lo mismo, los voy a mandar a redondear
+                descripcion = "Pago de servicio" 
+                fecha = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+                codigo_factura = f"FAC-{cliente.identification}-{fecha.replace(' ', "").replace('/', '').replace(':', '')}"#Hace que la factura sea unica al concantenar la cedula del cliente y la fecha con lo guiones eliminados
+                
+                
+                factura = c.Bill(cliente, pago, cambio, descripcion, fecha, codigo_factura)
+                registro_factura.add(factura)
+                
+                cliente.pagos.append({
+                    'pago': pago,
+                    'cambio': cambio,  #En esta parte hace que el pago, cambio y fecha sean agregados en la lista llamada pago en en el models llamado cliente
+                    'fecha': fecha
+                })
+                
+                print(f"Pago registrado. Cambio: {cambio:.2f} córdobas. Factura generada: {codigo_factura}")
                 break
         except ValueError:
             print("Error, ingrese solamente números")
