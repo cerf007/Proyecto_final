@@ -248,18 +248,19 @@ def registrar_pago_datos(cliente):
     while True:
         try:
             pago = input("Ingrese el pago realizado por el cliente en córdobas: ").strip()
-            if pago.isdigit():
+            if pago.isnumeric():
                 pago = float(pago)
                 if pago < 737:
                     print("Pago insuficiente, el pago minimo del servicio es de 737 cordobas")
                     break
                 else: 
                     cambio =  pago - 737
-                    fecha = datetime.datetime.now().strftime("%D-%M-%Y, %H:%M:%S")
-                    codigo_factura = f"FAC-{cliente.identification}-{fecha.replace("-", "")}"#Hace que la factura sea unica al concantenar la cedula del cliente y la fecha con lo guiones eliminados
+                    descripcion = "Pago de servicio" 
+                    fecha = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+                    codigo_factura = f"FAC-{cliente.identification}-{fecha.replace(" ", "")}"#Hace que la factura sea unica al concantenar la cedula del cliente y la fecha con lo guiones eliminados
                     
                     
-                    factura = c.Bill(pago, cambio, fecha, codigo_factura)
+                    factura = c.Bill(pago, cambio, descripcion, fecha, codigo_factura)
                     registo_factura.add(factura)
                     
                     cliente.pagos.append({
@@ -271,7 +272,7 @@ def registrar_pago_datos(cliente):
                     print(f"Pago registrado. Cambio: {cambio} córdobas. Factura generada: {codigo_factura}")
                     break
             else:
-                print("El pago es insuficiente. Debe ser mínimo de 737")
+                print("Ingrese caracteres númericos")
                 break
         except ValueError:
             print("Error, ingrese solamente números")
