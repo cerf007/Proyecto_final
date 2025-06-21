@@ -18,6 +18,7 @@ class Client:
     
 class Bill:
     def __init__(self, payment, change ,description, date, code):
+        self.client = Client
         self.payment = payment
         self.change = change
         self.description = description
@@ -25,4 +26,4 @@ class Bill:
         self.code = code
         
     def __str__(self):
-        return f"|\t NOMBRE: {Client.name} \t|\t APELLIDO: {Client.last_name} \t|\t PAGO: {self.payment} \t|\t CAMBIO: {self.change} \t|\t DESCRIPCIÓN: {self.description} \t|\t FECHA Y HORA: {self.date} \t|\t NUMERO DE FACTURA: {self.code} \t|"
+        return f"|\t NOMBRE: {self.client.name} \t|\t APELLIDO: {self.client.last_name} \t|\t PAGO: {self.payment} \t|\t CAMBIO: {self.change} \t|\t DESCRIPCIÓN: {self.description} \t|\t FECHA Y HORA: {self.date} \t|\t NUMERO DE FACTURA: {self.code} \t|"
