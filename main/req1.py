@@ -3,6 +3,7 @@ import dao.functions as f
 import datetime
  
 servicios = f.ClientDao()
+registo_factura = f.BillDao()
 
 def menu():
     print("""
@@ -29,10 +30,12 @@ def main():
                 servicios.show()
             elif opcion == 3:
                 editar_cliente()
+            elif opcion == 4:
+               eliminar_cliente()
             elif opcion == 5:
                 registrar_pago()
-            elif opcion == 4:
-               eliminar_cliente() 
+            elif opcion == 7:
+                registo_factura.show()
             elif opcion == 8:
                 print("En proceso de mejora")
             elif opcion == 9:
@@ -120,6 +123,7 @@ def eliminar_cliente():
             client_to_delete = next((client for client in servicios.service if client.name == nombre_cliente), None)
             if client_to_delete:
                 servicios.delete(client_to_delete)
+                registo_factura.delete(client_to_delete)
                 print(f"Cliente {nombre_cliente} eliminado.")
                 break
             else:
@@ -228,35 +232,46 @@ def registrar_pago():
                     if cliente.name == busqueda or cliente.last_name == busqueda or cliente.identification == busqueda:
                         found = True
                         print("Cliente encontrado:")
-                        print(cliente.name, cliente.last_name, cliente.identification, cliente.plan)
+                        print(cliente.name, cliente.last_name, cliente.identification)
                         registrar_pago_datos(cliente) #Faltaba el argumento
                         break
-                if found:
-                       break
-                else:
-                       print("El usuario que usted busca no existe o no fue introducido tal como fue guardado")
-                       break
+                if  not found:
+                    print("El usuario introducido no existe o no fue introcido tal y como fue registrado")
+                break
             else:
                    print("Caracter inválido, ingrese solo carácteres alfabéticos")
         except ValueError:
                print("Caracter inválido, ingrese solo carácteres alfabéticos")
-               
-        registrar_pago_datos(cliente)
-        cliente.display_payments()
-        break
+               break
             
 def registrar_pago_datos(cliente): 
     while True:
         try:
             pago = input("Ingrese el pago realizado por el cliente en córdobas: ").strip()
             if pago.isdigit():
+                pago = float(pago)
                 if pago < 737:
                     print("Pago insuficiente, el pago minimo del servicio es de 737 cordobas")
                     break
-                elif pago >= 737:
+                else: 
                     cambio =  pago - 737
+                    fecha = datetime.datetime.now().strftime("%D-%M-%Y, %H:%M:%S")
+                    codigo_factura = f"FAC-{cliente.identification}-{fecha.replace("-", "")}"#Hace que la factura sea unica al concantenar la cedula del cliente y la fecha con lo guiones eliminados
+                    
+                    
+                    factura = c.Bill(pago, cambio, fecha, codigo_factura)
+                    registo_factura.add(factura)
+                    
+                    cliente.pagos.append({
+                        'pago': pago,
+                        'cambio': cambio,  #En esta parte hace que el pago, cambio y fecha sean agregados en la lista llamada pago en en el models llamado cliente
+                        'fecha': fecha
+                    })
+                    
+                    print(f"Pago registrado. Cambio: {cambio} córdobas. Factura generada: {codigo_factura}")
+                    break
             else:
-                print("Solo ingrese números")
-            
+                print("El pago es insuficiente. Debe ser mínimo de 737")
+                break
         except ValueError:
             print("Error, ingrese solamente números")
