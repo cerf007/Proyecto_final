@@ -260,7 +260,7 @@ def registrar_pago_datos(cliente):
                     codigo_factura = f"FAC-{cliente.identification}-{fecha.replace(" ", "")}"#Hace que la factura sea unica al concantenar la cedula del cliente y la fecha con lo guiones eliminados
                     
                     
-                    factura = c.Bill(pago, cambio, descripcion, fecha, codigo_factura)
+                    factura = c.Bill(cliente, pago, cambio, descripcion, fecha, codigo_factura)
                     registo_factura.add(factura)
                     
                     cliente.pagos.append({
