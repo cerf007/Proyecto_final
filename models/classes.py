@@ -26,4 +26,10 @@ class Bill:
         self.code = code
         
     def __str__(self):
-        return f"|\t NOMBRE: {self.client.name} \t|\t APELLIDO: {self.client.last_name} \t|\t PAGO: {self.payment} \t|\t CAMBIO: {self.change} \t|\t DESCRIPCIÓN: {self.description} \t|\t FECHA Y HORA: {self.date} \t|\t NUMERO DE FACTURA: {self.code} \t|"
+        return (f"\t NOMBRE: {self.client.name} \t\n"
+                f"\t APELLIDO: {self.client.last_name} \t\n"
+                f"\t PAGO: {self.payment} \t\n"
+                f"\t CAMBIO: {self.change} \t\n"
+                f"\t DESCRIPCIÓN: {self.description} \t\n"
+                f"\t FECHA Y HORA: {self.date} \t\n"
+                f"\t NUMERO DE FACTURA: {self.code} \t\n")
