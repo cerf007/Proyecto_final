@@ -169,14 +169,20 @@ def editar_cliente():
                break
 
 def editar_nuevo_cliente(cliente):
-    #Aqui es copiar la estructura base de registrar_cliente para la validacción de datos
+    nuevo_nombre = cliente.name
+    nuevo_apellido = cliente.last_name
+    nueva_cedula = cliente.identification
+    nuevo_numero_telefono = str(cliente.phone_number)
+    nuevo_correo_elec = cliente.email
+    nuevo_direccion = cliente.address
+
     while True:
         try:
-            nuevo_nombre = input("Ingrese los 2 nuevos nombres del cliente: ").strip()
-            if nuevo_nombre == "":
+            entrada = input("Ingrese los 2 nuevos nombres del cliente: ").strip()
+            if entrada == "":
                 break #Agregue esto si quiero mantener el nombre igual, ahora es agregar a todos
             elif  all(part.isalpha() for part in nuevo_nombre.split()):
-                cliente.name = nuevo_nombre
+                nuevo_nombre = entrada
                 break
             else:
                 print("Los nombres solo deben contener caracteres alfabéticas")
@@ -186,11 +192,11 @@ def editar_nuevo_cliente(cliente):
         
     while True:
         try:
-            nuevo_apellido = input("Ingrese los 2 nuevos apellidos del cliente : ")
-            if nuevo_apellido == "":
+            entrada = input("Ingrese los 2 nuevos apellidos del cliente : ")
+            if entrada == "":
                 break
             elif  all(part.isalpha() for part in nuevo_apellido.split()):
-                cliente.last_name = nuevo_apellido
+                nuevo_apellido = entrada
                 break
             else:
                 print("Los apellidos solo deben contener caracteres alfabéticas")
@@ -199,10 +205,11 @@ def editar_nuevo_cliente(cliente):
         
     while True:
         try:
-            nueva_cedula = input("Ingrese la nueva cedula del cliente en [Formato: xxx-xxxxxx-xxxx, 13 números y caracter alfabético al final]: ")
-            if nueva_cedula == "":
+            entrada = input("Ingrese la nueva cedula del cliente en [Formato: xxx-xxxxxx-xxxx, 13 números y caracter alfabético al final]: ")
+            if entrada == "":
                 break
-            elif len(nueva_cedula) == 16 and nueva_cedula[3] == '-' and nueva_cedula[10] == '-' and nueva_cedula[:-1].replace('-', '').isdigit() and nueva_cedula[-1].isalpha():
+            elif len(entrada) == 16 and entrada[3] == '-' and entrada[10] == '-' and entrada[:-1].replace('-', '').isdigit() and entrada[-1].isalpha():
+                nueva_cedula = entrada
                 break
             else:
                 print("La nueva cédula no sigue el formato indicado [Formato: xxx-xxxxxx-xxxx, 13 números y caracter alfabético al final]")
@@ -211,24 +218,24 @@ def editar_nuevo_cliente(cliente):
         
     while True:
         try:
-            nuevo_numero_telefono = input("Ingrese el número telefónico del cliente [8 dígitos, sin espacios de separación]: ") 
-            if nuevo_numero_telefono == "":
+            entrada = input("Ingrese el número telefónico del cliente [8 dígitos, sin espacios de separación]: ") 
+            if entrada == "":
                 break
-            elif len(nuevo_numero_telefono) == 8 and nuevo_numero_telefono.isdigit():
-                cliente.phone_number = int(nuevo_numero_telefono)
+            elif len(entrada) == 8 and entrada.isdigit():
+                nuevo_numero_telefono = entrada
                 break
             else:
                     print("Numero de telefono inválido. Debe de ser de 8 números y sin espacios")
         except ValueError:
                 print("Carácteres inválidos. Por favor, solo ingrese numeros")
                 
-    nuevo_correo_elec = input("Ingrese el nuevo correo electrónico del cliente: ").strip()
-    if nuevo_correo_elec:
-        cliente.email = nuevo_correo_elec
+    entrada = input("Ingrese el nuevo correo electrónico del cliente: ").strip()
+    if entrada:
+        nuevo_correo_elec = entrada
         
-    nuevo_direccion = input("Ingrese la nueva dirección del cliente: ").strip()
-    if nuevo_direccion:
-        cliente.address = nuevo_direccion      
+    entrada = input("Ingrese la nueva dirección del cliente: ").strip()
+    if entrada:
+        nuevo_direccion = entrada   
         
     for cliente_existente in servicios.service:
         if cliente_existente is cliente:
@@ -242,8 +249,15 @@ def editar_nuevo_cliente(cliente):
         if nuevo_correo_elec and cliente_existente.email.lower() == nuevo_correo_elec.lower():
             print("Ya existe otro cliente con ese correo electrónico.")
             return
+        
+    cliente.name = nuevo_nombre
+    cliente.last_name = nuevo_apellido
+    cliente.identification = nueva_cedula
+    cliente.phone_number = int(nuevo_numero_telefono)
+    cliente.email = nuevo_correo_elec
+    cliente.address = nuevo_direccion
+    
 
-            
     print("Cliente actualizado con éxito.")
     
 def registrar_pago():
