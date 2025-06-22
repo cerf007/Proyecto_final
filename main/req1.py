@@ -285,16 +285,20 @@ def registrar_pago_datos(cliente):
     while True:
         try:
             pago_str = input("Ingrese el pago realizado por el cliente en córdobas: ").strip().replace(',', '.')
+            if not pago_str:
+                print("Debe ingresar un monto")
+                continue
             pago= float (pago_str)
             if pago < 737:
-                print("Pago insuficiente, el pago minimo del servicio es de 737 cordobas")
+                print("Pago insuficiente, el pago mínimo del servicio es de 737 córdobas")
                 break
             else: 
                 pago = round(pago, 2) #Voy a mandarlo a redondear hasta 2 decimales, por que demasiados en la lista
                 cambio =  round(pago - 737, 2)
                 descripcion = "Pago de servicio" 
                 fecha = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-                codigo_factura = f"FAC-{cliente.identification}-{fecha.replace(' ', "").replace('/', '').replace(':', '')}"#Hace que la factura sea unica al concantenar la cedula del cliente y la fecha con lo guiones eliminados
+                fecha_formateada = fecha.replace(" ", "").replace("/", "").replace(":", "") #Hace que la factura sea unica al concantenar la cedula del cliente y la fecha con lo guiones eliminados
+                codigo_factura =  f"FAC-{cliente.identification}-{fecha_formateada}"
                 
                 
                 factura = c.Bill(cliente, pago, cambio, descripcion, fecha, codigo_factura)
