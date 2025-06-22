@@ -264,14 +264,19 @@ def registrar_pago():
     while True:
         try:
             busqueda = input("Ingrese los 2 nombres, los 2 apellidos del cliente a buscar o la cedula:").strip()
+            if not busqueda:
+                print("Debe ingresar un nombre, apellido o cédula")
+                continue
             buscando_cliente = buscar_cliente(busqueda)
-            if busqueda:
-                print("Cliente encontrado:")
-                print(buscando_cliente.name, buscando_cliente.last_name, buscando_cliente.identification)
+            if buscando_cliente:
+                print(f"Cliente encontrado: \n {buscando_cliente.name} {buscando_cliente.last_name} {buscando_cliente.identification}")
                 registrar_pago_datos(buscando_cliente) 
+                break
             else:
                    print("El cliente no existe o no fue introducido tal y como fue guardado")
-                   break
+                   continuar = input("¿Desea intentar de nuevo? (s/n): ").strip().lower()
+                   if continuar != 's':
+                       break
         except ValueError:
                print("Caracter inválido, ingrese solo carácteres alfabéticos")
                break
