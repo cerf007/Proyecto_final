@@ -2,8 +2,9 @@ import models.classes as c
 import dao.functions as f
 import datetime
 import os
+import pwinput
  
-servicios = f.ClientDao()
+servicios = f.ClientDao() 
 registro_factura = f.BillDao()
 
 def menu():
@@ -20,30 +21,43 @@ Bienvenido a su registradora. ELija de una de las siguientes ipciones
 """)
     
 def main():
+    clave = 'admin456'
     while True:
         try:
-            menu()
-            opcion = int(input("Ingrese la opcion: ")) #Se me olvido el input
-            if opcion == 1:
-                registrar_cliente()
-            elif opcion == 2:
-                servicios.show()
-                limpiar_pantalla()
-            elif opcion == 3:
-                editar_cliente()
-            elif opcion == 4:
-               eliminar_cliente()
-            elif opcion == 5:
-                registrar_pago()
-            elif opcion == 7:
-                buscar_imprimir_factura()
-            elif opcion == 8:
-                print("Saliendo....")
-                break
+            entrada =  pwinput.pwinput(prompt='Contraseña: ', mask= '*')
+            if entrada == clave:
+                while True:
+                    try:
+                        menu()
+                        opcion = int(input("Ingrese la opcion: ")) #Se me olvido el input
+                        if opcion == 1:
+                            registrar_cliente()
+                        elif opcion == 2:
+                            servicios.show()
+                            limpiar_pantalla()
+                        elif opcion == 3:
+                            editar_cliente()
+                        elif opcion == 4:
+                           eliminar_cliente()
+                        elif opcion == 5:
+                            registrar_pago()
+                        elif opcion == 6:
+                            generar_reporte_financiero()
+                        elif opcion == 7:
+                            buscar_imprimir_factura()
+                        elif opcion == 8:
+                            print("Saliendo....")
+                            break
+                        else:
+                            print("Opción inválida. Ingrese solo el número 1 por ahora")
+                    except ValueError:
+                        print("Entrada no válida. Por favor, ingrese un número.")
             else:
-                print("Opción inválida. Ingrese solo el número 1 por ahora")
+                print("Clave de acceso incorrecto")
+                continue
         except ValueError:
-            print("Entrada no válida. Por favor, ingrese un número.")
+            print("Error inesperado")
+            
 
 def registrar_cliente():
     while True:
@@ -182,12 +196,12 @@ def editar_cliente():
                break
 
 def editar_nuevo_cliente(cliente):
-    nuevo_nombre = cliente.name
-    nuevo_apellido = cliente.last_name
-    nueva_cedula = cliente.identification
-    nuevo_numero_telefono = str(cliente.phone_number)
-    nuevo_correo_elec = cliente.email
-    nuevo_direccion = cliente.address
+    nuevo_nombre = None
+    nuevo_apellido = None
+    nueva_cedula = None
+    nuevo_numero_telefono = None
+    nuevo_correo_elec = None
+    nuevo_direccion = None
 
     while True:
         try:
@@ -266,14 +280,21 @@ def editar_nuevo_cliente(cliente):
             limpiar_pantalla()
             return
         
-    cliente.name = nuevo_nombre
-    cliente.last_name = nuevo_apellido
-    cliente.identification = nueva_cedula
-    cliente.phone_number = int(nuevo_numero_telefono)
-    cliente.email = nuevo_correo_elec
-    cliente.address = nuevo_direccion
-    
+    datos_a_modificar = {}
+    if nuevo_nombre:
+        datos_a_modificar['name'] = nuevo_nombre
+    if nuevo_apellido:
+        datos_a_modificar['last_name'] = nuevo_apellido
+    if nueva_cedula:
+        datos_a_modificar['identification'] = nueva_cedula
+    if nuevo_numero_telefono:
+        datos_a_modificar['phone_number'] = nuevo_numero_telefono
+    if nuevo_correo_elec:
+        datos_a_modificar['email'] = nuevo_correo_elec
+    if nuevo_direccion:
+        datos_a_modificar['address'] = nuevo_direccion
 
+    servicios.update(cliente, datos_a_modificar)
     print("Cliente actualizado con éxito.")
     
 def registrar_pago():
@@ -298,6 +319,32 @@ def registrar_pago():
                print("Error inesperado, intente nuevamente")
                limpiar_pantalla()
                break
+
+def generar_reporte_financiero():
+    total_ingresos = 0
+    total_cambios = 0
+    total_facturas = len(registro_factura.state)
+    
+    if total_facturas == 0:
+        print("No hay facturas registradas hasta el momento.")
+        limpiar_pantalla()
+        return
+    
+    print("\n=== Reporte Financiero ===")
+    print(f"Total de facturas emitidas: {total_facturas}")
+    print("\nDetalle de facturas:")
+
+    for factura in registro_factura.state:
+        print(factura)
+        total_ingresos += factura.amount
+        total_cambios += factura.change
+        
+    print("\n=== Resumen ===")
+    print(f"Total recaudado (sin cambios): {total_ingresos:.2f} córdobas")
+    print(f"Total de cambios entregados: {total_cambios:.2f} córdobas")
+    print(f"Ingreso neto: {total_ingresos - total_cambios:.2f} córdobas")
+    
+    limpiar_pantalla()
             
 def registrar_pago_datos(cliente): 
     while True:
@@ -380,7 +427,7 @@ def buscar_imprimir_factura():
                 codigo = input("Ingrese el código de la factura a buscar: ").strip()
                 factura_encontrada = next((f for f in registro_factura.state if f.code == codigo), None)
 
-                if factura:
+                if factura_encontrada:
                     print("\nFactura encontrada:")
                     print(factura_encontrada)
                 else:
