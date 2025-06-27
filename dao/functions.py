@@ -8,14 +8,23 @@ class ClientDao:
     def delete(self, client):
         self.service.remove(client)
         
-    #def buscar(self, nombre):
-    #    for producto in service:
-    #        if producto.nombre 
-            
-        
     def show(self):
         for product in self.service:
-             print(product)  # Ahora si imprimirá la representación de cada cliente
+             print(product)  
+             
+    def update(self, client, new_data):
+        if 'name' in new_data:
+            client.name = new_data['name']
+        if 'last_name' in new_data:
+            client.last_name = new_data['last_name']
+        if 'identification' in new_data:
+            client.identification = new_data['identification']
+        if 'phone_number' in new_data:
+            client.phone_number = new_data['phone_number']
+        if 'email' in new_data:
+            client.email = new_data['email']
+        if 'address' in new_data:
+            client.address = new_data['address']
              
 class BillDao:
     def __init__(self):
