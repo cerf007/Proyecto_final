@@ -9,12 +9,23 @@ class Client:
         self.pagos = [] #se agreego una lista para registrar los pagos del cliente
         
     def __str__(self):
-        return f"NOMBRE \t| APELLIDO \t| CÉDULA \t|NÚMERO TELEFÓNICO \t| CORREO ELECTRÓNICO \t| DIRECCIÓN \t|\n{self.name} \t| {self.last_name} \t| {self.identification}| {self.phone_number} \t| {self.email} \t| {self.address} \t"  
-    
-    #def display_payments(self):
-    #    print("Pagos:")
-    #    for pago in self.pagos:
-    #        print(f"Pago: {pago['pago']}, Cambio: {pago['cambio']}, Fecha: {pago['fecha']}")
+        encabezado = (
+            f"{'NOMBRE':<25} | "
+            f"{'APELLIDO':<25} | "
+            f"{'CÉDULA':<18} | "
+            f"{'TELÉFONO':<12} | "
+            f"{'EMAIL':<28} | "
+            f"{'DIRECCIÓN':<20}"
+        )
+        datos = (
+            f"{self.name:<25} | "
+            f"{self.last_name:<25} | "
+            f"{self.identification:<18} | "
+            f"{self.phone_number:<12} | "
+            f"{self.email:<28} | "
+            f"{self.address:<20}"
+        )
+        return f"{encabezado}\n{datos}"
     
 class Bill:
     def __init__(self, client,payment, change ,description, date, code):
