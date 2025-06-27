@@ -28,6 +28,7 @@ def main():
                 registrar_cliente()
             elif opcion == 2:
                 servicios.show()
+                limpiar_pantalla()
             elif opcion == 3:
                 editar_cliente()
             elif opcion == 4:
