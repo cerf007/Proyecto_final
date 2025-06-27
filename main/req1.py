@@ -275,7 +275,6 @@ def editar_nuevo_cliente(cliente):
     
 
     print("Cliente actualizado con éxito.")
-    limpiar_pantalla()
     
 def registrar_pago():
     while True:
