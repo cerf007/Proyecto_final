@@ -65,7 +65,9 @@ def registrar_cliente():
             nombres = input("Ingrese los 2 nombres del cliente: ").strip()
             if not nombres:
                 print("No puede haber una entrada de datos vacía")
+                continue
             elif all(part.isalpha() for part in nombres.split()):
+                nombres = nombres.title()
                 break
             else:
                 print("Los nombres solo deben contener caracteres alfabéticas")
@@ -77,7 +79,9 @@ def registrar_cliente():
             apellidos = input("Ingrese los 2 apellidos del cliente: ").strip()
             if not apellidos:
                 print("No puede haber una entrada de datos vacía")
+                continue
             elif all(part.isalpha() for part in apellidos.split()):
+                apellidos = apellidos.title()
                 break
             else:
                 print("Los apeellidos solo deben de contener caracteres alfabéticos ")
@@ -87,10 +91,11 @@ def registrar_cliente():
     #agregando cédula como identificador
     while True:
         try:
-            cedula_str = input("Ingrese la cédula del cliente [Formato = xxx-xxxxx-xxxx, 13 números y caracter alfabético al final]: ").strip()
+            cedula_str = input("Ingrese la cédula del cliente [Formato = xxx-xxxxx-xxxx, 13 digitos númericos y 1 letra al final]: ").strip()
             if not cedula_str:
                 print("No puede haber una entrada de datos vacía")
             if (len(cedula_str) == 16 and cedula_str[3] == '-' and cedula_str[10] == '-' and cedula_str[:-1].replace('-', '').isdigit() and cedula_str[-1].isalpha()):
+                cedula_str =  cedula_str[:-1] + cedula_str[-1].upper()
                 break
             else:
                 print("Numero de cédula inválido. El formato introducido es inválido")
@@ -103,6 +108,7 @@ def registrar_cliente():
             numero_telefono_str = input("Ingrese el número telefónico del cliente [8 dígitos, sin espacios de separación]: ").strip()
             if not numero_telefono_str:
                 print("No puede haber una entrada de datos vacía")
+                continue
             elif len(numero_telefono_str) == 8 and numero_telefono_str.isdigit():
                 numero_telefono = int(numero_telefono_str)
                 break
@@ -116,8 +122,14 @@ def registrar_cliente():
             correo_elec = input("Ingrese el correo electrónico del cliente: ").strip()
             if not correo_elec:
                 print("No puede haber una entrada de datos vacía")
+                continue
+            correo_elec = correo_elec.lower()
+            if "@" not in correo_elec or "." not in correo_elec.split("@")[-1]:
+                print("Correo electrónico inválido, debe contener @ y un punto después de @")                
+                continue
             else:
                 break
+        
         except ValueError:
             print("Carácteres inválidos")
       
@@ -126,7 +138,9 @@ def registrar_cliente():
             direccion = input("Ingrese la dirección del cliente: ").strip()
             if not direccion:
                 print("No puede haber una entrada de datos vacía")
+                continue
             else:
+                direccion = direccion.title()
                 break
         except ValueError:
             print("Carácteres inválidos")
@@ -134,12 +148,15 @@ def registrar_cliente():
     for cliente in servicios.service:
         if cliente.identification.lower() == cedula_str.lower():
             print("Ya existe un cliente con esa cédula.")
+            limpiar_pantalla()
             return
         if cliente.phone_number == numero_telefono:
             print("Ya existe un cliente con ese número telefónico.")
+            limpiar_pantalla()
             return
         if cliente.email.lower() == correo_elec.lower():
             print("Ya existe un cliente con ese correo electrónico.")
+            limpiar_pantalla()
             return
     
     registrar = c.Client(nombres, apellidos, cedula_str ,numero_telefono, correo_elec, direccion)
@@ -209,7 +226,7 @@ def editar_nuevo_cliente(cliente):
             if entrada == "":
                 break #Agregue esto si quiero mantener el nombre igual, ahora es agregar a todos
             elif  all(part.isalpha() for part in entrada.split()):
-                nuevo_nombre = entrada
+                nuevo_nombre = entrada.title()
                 break
             else:
                 print("Los nombres solo deben contener caracteres alfabéticas")
@@ -223,7 +240,7 @@ def editar_nuevo_cliente(cliente):
             if entrada == "":
                 break
             elif  all(part.isalpha() for part in entrada.split()):
-                nuevo_apellido = entrada
+                nuevo_apellido = entrada.title()
                 break
             else:
                 print("Los apellidos solo deben contener caracteres alfabéticas")
@@ -236,12 +253,12 @@ def editar_nuevo_cliente(cliente):
             if entrada == "":
                 break
             elif len(entrada) == 16 and entrada[3] == '-' and entrada[10] == '-' and entrada[:-1].replace('-', '').isdigit() and entrada[-1].isalpha():
-                nueva_cedula = entrada
+                nueva_cedula = entrada[:-1] + entrada[-1].upper()
                 break
             else:
                 print("La nueva cédula no sigue el formato indicado [Formato: xxx-xxxxxx-xxxx, 13 números y caracter alfabético al final]")
         except ValueError:
-            print("Caracteres inválidos, por favor ingrese el formato adecuado [Formato: xxx-xxxxxx-xxxx, 13 números y caracter alfabético al final]")
+            print("Caracteres inválidos, por favor ingrese el formato adecuado")
         
     while True:
         try:
@@ -249,20 +266,37 @@ def editar_nuevo_cliente(cliente):
             if entrada == "":
                 break
             elif len(entrada) == 8 and entrada.isdigit():
-                nuevo_numero_telefono = entrada
+                nuevo_numero_telefono = int(entrada)
                 break
             else:
                     print("Numero de telefono inválido. Debe de ser de 8 números y sin espacios")
         except ValueError:
                 print("Carácteres inválidos. Por favor, solo ingrese numeros")
-                
-    entrada = input(f"Ingrese el nuevo correo electrónico del cliente [{cliente.email}]: ").strip()
-    if entrada:
-        nuevo_correo_elec = entrada
-        
-    entrada = input(f"Ingrese la nueva dirección del cliente[{cliente.address}]: ").strip()
-    if entrada:
-        nuevo_direccion = entrada   
+       
+    while True:
+        try:            
+            entrada = input(f"Ingrese el nuevo correo electrónico del cliente [{cliente.email}]: ").strip()
+            if entrada == "":
+                break
+            entrada = entrada.lower()
+            if "@" not in entrada or "." not in entrada.split("@")[-1]:
+                print("Correo electrónico inválido, debe contener @ y un punto después de @")
+                continue
+            else:
+                nuevo_correo_elec = entrada
+                break
+        except ValueError:
+            print("Carácteres inválidos")
+
+    while True:
+        try:
+            entrada = input(f"Ingrese la nueva dirección del cliente [{cliente.address}]: ").strip()
+            if entrada == "":
+                break
+            nuevo_direccion = entrada.title()
+            break
+        except ValueError:
+            print("Carácteres inválidos")
         
     for cliente_existente in servicios.service:
         if cliente_existente is cliente:
@@ -320,32 +354,6 @@ def registrar_pago():
                limpiar_pantalla()
                break
 
-def generar_reporte_financiero():
-    total_ingresos = 0
-    total_cambios = 0
-    total_facturas = len(registro_factura.state)
-    
-    if total_facturas == 0:
-        print("No hay facturas registradas hasta el momento.")
-        limpiar_pantalla()
-        return
-    
-    print("\n=== Reporte Financiero ===")
-    print(f"Total de facturas emitidas: {total_facturas}")
-    print("\nDetalle de facturas:")
-
-    for factura in registro_factura.state:
-        print(factura)
-        total_ingresos += factura.amount
-        total_cambios += factura.change
-        
-    print("\n=== Resumen ===")
-    print(f"Total recaudado (sin cambios): {total_ingresos:.2f} córdobas")
-    print(f"Total de cambios entregados: {total_cambios:.2f} córdobas")
-    print(f"Ingreso neto: {total_ingresos - total_cambios:.2f} córdobas")
-    
-    limpiar_pantalla()
-            
 def registrar_pago_datos(cliente): 
     while True:
         try:
@@ -376,7 +384,6 @@ def registrar_pago_datos(cliente):
                 })
                 
                 print(f"Pago registrado. Cambio: {cambio:.2f} córdobas. Factura generada: {codigo_factura}")
-                limpiar_pantalla()
                 break
         except ValueError:
             print("Error, ingrese un número válido [use punto o coma para decimales si es necesario].")
@@ -385,6 +392,8 @@ def registrar_pago_datos(cliente):
         
 def buscar_cliente(busqueda):
     entrada = busqueda.strip().lower()
+    if not entrada:
+        return None
     for cliente in servicios.service:
         nombre_completo = f"{cliente.name} {cliente.last_name}".lower()
         if (entrada == cliente.identification.lower() or
@@ -401,13 +410,17 @@ def buscar_imprimir_factura():
 1. Buscar facturas por nombre, apellido o cédula del cliente
 2. Buscar facturas por código
 3. Volver al menú""")
-            opcion = int(input("Ingrese la el número de la acción a realizar: "))
+            opcion = int(input("Ingrese el número de la acción a realizar: "))
             
             if opcion == 1:
                 busqueda = input("Ingrese los 2 nombres, los 2 apellidos del cliente a buscar o la cedula: ").strip()
+                if not busqueda:
+                    print("Debe ingresar un dato para buscar.")
+                    continue
+                
                 buscando_cliente = buscar_cliente(busqueda)
-                if busqueda:
-                    print("Cliente encontrando:")
+                if buscando_cliente:
+                    print("Cliente encontrado:")
                     print(f"{buscando_cliente.name} {buscando_cliente.last_name}  -  {buscando_cliente.identification}")
                     print("Facturas del cliente: ")
                     
@@ -418,13 +431,17 @@ def buscar_imprimir_factura():
                             print(factura)   
                     else:
                         print("Este cliente no tiene facturas registradas.")
-                        break
                 else:
                     print("Cliente no encontrado.")
-                    break
+                    
+                limpiar_pantalla()
 
             elif opcion == 2:
                 codigo = input("Ingrese el código de la factura a buscar: ").strip()
+                if not codigo:
+                    print("Debe ingresar un código para buscar.")
+                    continue
+                
                 factura_encontrada = next((f for f in registro_factura.state if f.code == codigo), None)
 
                 if factura_encontrada:
@@ -432,9 +449,12 @@ def buscar_imprimir_factura():
                     print(factura_encontrada)
                 else:
                     print("No se encontró ninguna factura con ese código.")
-                    break
+                    
+                limpiar_pantalla()
+                
             elif opcion == 3:
                 print("Volviendo al menú principal...")
+                limpiar_pantalla()
                 break
 
             else:
@@ -442,6 +462,32 @@ def buscar_imprimir_factura():
 
         except ValueError:
             print("Entrada inválida, por favor ingrese un número.")
+            
+def generar_reporte_financiero():
+    total_ingresos = 0
+    total_cambios = 0
+    total_facturas = len(registro_factura.state)
+    
+    if total_facturas == 0:
+        print("No hay facturas registradas hasta el momento.")
+        limpiar_pantalla()
+        return
+    
+    print("\n=== Reporte Financiero ===")
+    print(f"Total de facturas emitidas: {total_facturas}")
+    print("\nDetalle de facturas:")
+
+    for factura in registro_factura.state:
+        print(factura)
+        total_ingresos += factura.amount
+        total_cambios += factura.change
+        
+    print("\n=== Resumen ===")
+    print(f"Total recaudado (sin cambios): {total_ingresos:.2f} córdobas")
+    print(f"Total de cambios entregados: {total_cambios:.2f} córdobas")
+    print(f"Ingreso neto: {total_ingresos - total_cambios:.2f} córdobas")
+    
+    limpiar_pantalla()
             
 def limpiar_pantalla():
     input(f"Presione enter para continuar:")
