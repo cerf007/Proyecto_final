@@ -26,6 +26,7 @@ def main():
         try:
             entrada =  pwinput.pwinput(prompt='Contraseña: ', mask= '*')
             if entrada == clave:
+                limpiar_pantalla()
                 while True:
                     try:
                         menu()
@@ -47,7 +48,7 @@ def main():
                             buscar_imprimir_factura()
                         elif opcion == 8:
                             print("Saliendo....")
-                            break
+                            return
                         else:
                             print("Opción inválida. Ingrese solo el número 1 por ahora")
                     except ValueError:
@@ -479,7 +480,7 @@ def generar_reporte_financiero():
 
     for factura in registro_factura.state:
         print(factura)
-        total_ingresos += factura.amount
+        total_ingresos += factura.payment
         total_cambios += factura.change
         
     print("\n=== Resumen ===")
