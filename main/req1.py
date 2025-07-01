@@ -63,7 +63,7 @@ def main():
                             print("Saliendo....")
                             return
                         else:
-                            print("Opción inválida, ingrese un número del 1 al 8") # En caso de que pongan una opción les aparece este mensaje y pide el número de nuevo
+                            print("Opción inválida, ingrese un número del 1 al 11") # En caso de que pongan una opción les aparece este mensaje y pide el número de nuevo
                     except ValueError:
                         print("Entrada no válida. Por favor, ingrese un número.")#En caso de error desconocido aparece esto, permitiendo que el programa continue sin cerrarse
             else:
