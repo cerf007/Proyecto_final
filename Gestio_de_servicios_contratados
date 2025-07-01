@@ -1,0 +1,19 @@
+class ServicioContratado:
+    def __init__(self, cliente, servicio):
+        self.cliente = cliente
+        self.servicio = servicio
+
+    def asociar_servicio(self, nuevo_servicio):
+        self.servicio = nuevo_servicio
+        print(f"Servicio para {self.cliente} actualizado a {self.servicio}.")
+
+    def obtener_servicio(self):
+        return self.servicio
+
+# Ejemplo de uso
+cliente1 = ServicioContratado("Cliente A", "Paquete Básico")
+print(cliente1.obtener_servicio())  # Salida: Paquete Básico
+
+# Actualizando el servicio
+cliente1.asociar_servicio("Paquete Premium")
+print(cliente1.obtener_servicio())  # Salida: Paquete Premium
