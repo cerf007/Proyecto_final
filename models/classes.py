@@ -50,5 +50,5 @@ class User:
         self.username = username
         self.password = password
     
-    def to_dict(self):
-        return {"username": self.username, "password": self.password}
+    def __str__(self):
+        return f"Usuario: {self.usuario}, Contraseña: ***oculta***"
