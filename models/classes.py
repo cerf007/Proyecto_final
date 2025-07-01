@@ -44,3 +44,11 @@ class Bill:
                 f"\t DESCRIPCIÓN: {self.description} \t\n"
                 f"\t FECHA Y HORA: {self.date} \t\n"
                 f"\t NUMERO DE FACTURA: {self.code} \t\n")
+        
+class User:
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+    
+    def to_dict(self):
+        return {"username": self.username, "password": self.password}
