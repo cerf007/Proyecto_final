@@ -76,3 +76,29 @@ class BillDao:
                 return pickle.load(f)
         else:
             return []
+        
+class UserDao:
+    def __init__(self):
+        self.file_path = "usuarios.bin"
+        self.users = self.load()
+        
+    def add(self, user):
+        self.users.append(user)
+        self.save()
+        
+    def authenticate(self, username, password):
+        for u in self.users:
+            if u.username == username and u.password == password:
+                return True
+        return False
+    
+    def save(self):
+        with open(self.file_path, "wb") as f:
+            pickle.dump(self.users, f)
+    
+    def load(self):
+        if os.path.exists(self.file_path):
+            with open(self.file_path, "rb") as f:
+                return pickle.load(f)
+        else:
+            return []
