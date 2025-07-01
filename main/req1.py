@@ -3,9 +3,11 @@ import dao.functions as f
 import datetime
 import os
 import pwinput
+
  
 servicios = f.ClientDao() 
 registro_factura = f.BillDao()
+usuarios = f.UserDao()
 
 def menu():
     print("""
@@ -17,17 +19,20 @@ Bienvenido a su registradora. ELija de una de las siguientes ipciones
 5.Registrar pagos
 6.Generar reporte financiero
 7.Búsqueda e impresión de facturas
-8.Salir
+8.Registrar usuario
+9.Mostrar usuario
+10.Eliminar usuario
+11.Salir
 """)
 #Esta función solo imprime el menú y sus opciones
     
 def main():
-    clave = 'admin456' # Es la clave para acceder al programa, se puede cambiar
     while True:
         try:
-            entrada =  pwinput.pwinput(prompt='Contraseña: ', mask= '*')#El pwinput le permite cambiar cada caracter introducido por un *, perfecto para contraseña
-            if entrada == clave: #Aqui revisa si lo intrducido es igual a la constante clave son iguales, si es igual le permite entrar al programa
-                limpiar_pantalla() #Llama a la función limpiar pantalla
+            empleado = input("Usuario: ")
+            password = pwinput.pwinput(prompt="Contraseña: ", mask="*")
+            if usuarios.authenticate(empleado, password):
+                limpiar_pantalla()
                 while True:
                     try:
                         menu()
@@ -48,6 +53,12 @@ def main():
                         elif opcion == 7:
                             buscar_imprimir_factura()
                         elif opcion == 8:
+                            registrar_usuario()
+                        elif opcion == 9:
+                            mostrar_usuarios()
+                        elif opcion == 10:
+                            eliminar_usuario()
+                        elif opcion == 11:
                             print("Saliendo....")
                             return
                         else:
@@ -541,3 +552,60 @@ def limpiar_pantalla():
     os.system('cls' if os.name == 'nt' else 'clear')
     # El input sirve para darle tiempo de leer la pantalla antes de limpiar al presionar enter
     #Esto limpia la consola, para que la siguiente interacción comience en limpio
+    
+def registrar_usuario():
+    clave_admin = "admin456"
+    clave_ingresada = pwinput.pwinput("Ingrese la clave de administrador para autorizar la creación de usuario: ", mask="*")
+    
+    if clave_ingresada != clave_admin:
+        print("Clave de administrador incorrecta. No se puede registrar el usuario.")
+        return
+    
+    username = input("Ingrese el nuevo nombre de usuario: ").strip()
+    password = pwinput.pwinput("Ingrese la contraseña nueva: ", mask="*").strip()
+    
+    if not username or not password:
+        print("Usuario o contraseña no pueden estar vacíos.")
+        return
+    
+    if any(u.username == username for u in usuarios.users):
+        print("Ese usuario ya existe.")
+        return
+    
+    nuevo_usuario = c.User(username, password)
+    usuarios.add(nuevo_usuario)
+    print(f"Usuario {username} agregado con éxito.")
+    
+def mostrar_usuarios():
+    if not usuarios.users:
+        print("No hay usuarios registrados.")
+        return
+    print("\n--- Lista de Usuarios ---")
+    for i, u in enumerate(usuarios.users, 1):
+        print(f"{i}. {u.username}")
+    print()
+    
+def eliminar_usuario():
+    clave_admin = "admin456"
+    clave_ingresada = pwinput.pwinput("Ingrese la clave de administrador para autorizar la eliminación de usuario: ", mask="*")
+    
+    if clave_ingresada != clave_admin:
+        print("Clave de administrador incorrecta. No se puede eliminar el usuario.")
+        return
+    
+    mostrar_usuarios()
+    if not usuarios.users:
+        return  # Si no hay usuarios, salimos
+    
+    username = input("Ingrese el nombre de usuario que desea eliminar: ").strip()
+    for u in usuarios.users:
+        if u.username == username:
+            confirmacion = input(f"¿Está seguro de eliminar al usuario '{username}'? (s/n): ").strip().lower()
+            if confirmacion == 's':
+                usuarios.users.remove(u)
+                usuarios.save()
+                print(f"Usuario '{username}' eliminado correctamente.")
+            else:
+                print("Eliminación cancelada.")
+            return
+    print("Usuario no encontrado.")
