@@ -19,18 +19,19 @@ Bienvenido a su registradora. ELija de una de las siguientes ipciones
 7.Búsqueda e impresión de facturas
 8.Salir
 """)
+#Esta función solo imprime el menú y sus opciones
     
 def main():
-    clave = 'admin456'
+    clave = 'admin456' # Es la clave para acceder al programa, se puede cambiar
     while True:
         try:
-            entrada =  pwinput.pwinput(prompt='Contraseña: ', mask= '*')
-            if entrada == clave:
-                limpiar_pantalla()
+            entrada =  pwinput.pwinput(prompt='Contraseña: ', mask= '*')#El pwinput le permite cambiar cada caracter introducido por un *, perfecto para contraseña
+            if entrada == clave: #Aqui revisa si lo intrducido es igual a la constante clave son iguales, si es igual le permite entrar al programa
+                limpiar_pantalla() #Llama a la función limpiar pantalla
                 while True:
                     try:
                         menu()
-                        opcion = int(input("Ingrese la opcion: ")) #Se me olvido el input
+                        opcion = int(input("Ingrese la opcion: ")) # Aquí le pedimos al usuario un número correspondiente a la acción a realizar
                         if opcion == 1:
                             registrar_cliente()
                         elif opcion == 2:
@@ -50,38 +51,39 @@ def main():
                             print("Saliendo....")
                             return
                         else:
-                            print("Opción inválida. Ingrese solo el número 1 por ahora")
+                            print("Opción inválida, ingrese un número del 1 al 8") # En caso de que pongan una opción les aparece este mensaje y pide el número de nuevo
                     except ValueError:
-                        print("Entrada no válida. Por favor, ingrese un número.")
+                        print("Entrada no válida. Por favor, ingrese un número.")#En caso de error desconocido aparece esto, permitiendo que el programa continue sin cerrarse
             else:
-                print("Clave de acceso incorrecto")
-                continue
+                print("Clave de acceso incorrecto")#En caso de que la contraseña sea incorrecta, le saldría esto
+                continue# con el continue le sigue pidiendo la contraseña
         except ValueError:
-            print("Error inesperado")
+            print("Error inesperado")#En caso de error desconocido aparece esto, permitiendo que el programa continue sin cerrarse
             
-
 def registrar_cliente():
     while True:
         try:
-            nombres = input("Ingrese los 2 nombres del cliente: ").strip()
+            nombres = input("Ingrese los 2 nombres del cliente: ").strip()#Pide los nombres y borra los espacios de al inicio y al final en caso de que haya alguno
             if not nombres:
-                print("No puede haber una entrada de datos vacía")
-                continue
-            elif all(part.isalpha() for part in nombres.split()):
-                nombres = nombres.title()
-                break
+                print("No puede haber una entrada de datos vacía")#Esto imprime si detecta que solo se dio enter y no se ingresó nada
+                continue # Esto le permite pedir de nuevo el nombre
+            elif all(part.isalpha() for part in nombres.split()):#Aqui verifica si todo lo escrito fueron caracteres alfabeticos y separa las 2 cadenas con el split en base a los espacios
+                nombres = nombres.lower() #Pasa todo a minuscula en caso de que el usario las ponga mayusculas y minusculas intercalas
+                nombres = nombres.title() # Pasa el primer caracter de cada cadena a una mayuscula
+                break # En caos de que todo este bien, lo pasa al siguiente, que es el apellido
             else:
-                print("Los nombres solo deben contener caracteres alfabéticas")
+                print("Los nombres solo deben contener caracteres alfabéticas")#Si la validación no resultó, imprime esto y pide el nombre nuevameno
         except ValueError:
-            print("Error, caracteres inválidos")
+            print("Error, caracteres inválidos")#Imprime esto en caso de errores inesperados
             
-    while True:
+    while True:#Es lo mismo que lo de nombres, cada parte. El valor que pide ahora es el apellido
         try:
             apellidos = input("Ingrese los 2 apellidos del cliente: ").strip()
             if not apellidos:
                 print("No puede haber una entrada de datos vacía")
                 continue
             elif all(part.isalpha() for part in apellidos.split()):
+                apellidos = apellidos.lower()
                 apellidos = apellidos.title()
                 break
             else:
@@ -92,59 +94,71 @@ def registrar_cliente():
     #agregando cédula como identificador
     while True:
         try:
-            cedula_str = input("Ingrese la cédula del cliente [Formato = xxx-xxxxx-xxxx, 13 digitos númericos y 1 letra al final]: ").strip()
+            cedula_str = input("Ingrese la cédula del cliente [Formato = xxx-xxxxx-xxxx, 13 digitos númericos y 1 letra al final]: ").strip() #El strip quita todo los espacios del inicio y al final
             if not cedula_str:
-                print("No puede haber una entrada de datos vacía")
+                print("No puede haber una entrada de datos vacía") # Imprime esto en caso de que el usuario no ingrese nada
+                continue #Le permite reiniciar el programa, sin pasar a las siguientes validaciones
             if (len(cedula_str) == 16 and cedula_str[3] == '-' and cedula_str[10] == '-' and cedula_str[:-1].replace('-', '').isdigit() and cedula_str[-1].isalpha()):
-                cedula_str =  cedula_str[:-1] + cedula_str[-1].upper()
+                
+                #El if detecta si lo ingresado fueron 16 caracteres, si el caracter 3er y 10mo son guiones, agarra todos los carecteres menos ultimo y reemplaza los guiones por espacios eliminados para detectar si el resto ingresado son dígitos. Por ultimo, detecta si el último caracter es alfabetico
+                
+                
+                cedula_str =  cedula_str[:-1] + cedula_str[-1].upper() 
+                #Une una cadena con todos los caracteres menos el último con el último caracter en mayuscula en caso de que haya sido introducido con miniscula
                 break
+            #Si todo sale bien, hace el break y pide el número de teléfono sino le imprime lo que está en el else
             else:
                 print("Numero de cédula inválido. El formato introducido es inválido")
         except ValueError:
-            print("Caracteres inválidos. Por favor, solo ingrese el formato adecuado [Formato: xxx-xxxxxx-xxxx, 13 números y caracter alfabético al final]")
+            print("Caracteres inválidos. Por favor, solo ingrese el formato adecuado [Formato: xxx-xxxxxx-xxxx, 13 números y caracter alfabético al final]") #Esto solo es en caso de un error inesperado
         
             
     while True:
         try:
-            numero_telefono_str = input("Ingrese el número telefónico del cliente [8 dígitos, sin espacios de separación]: ").strip()
+            numero_telefono_str = input("Ingrese el número telefónico del cliente [8 dígitos, sin espacios de separación]: ").strip() # Ya sabemos para que se usa el strip
             if not numero_telefono_str:
                 print("No puede haber una entrada de datos vacía")
+                #Esto es solo si el usuario no ingresa nada y con el continue reinicia este bucle
                 continue
             elif len(numero_telefono_str) == 8 and numero_telefono_str.isdigit():
-                numero_telefono = int(numero_telefono_str)
+                #Detecta si los caracteres ingresados son exactamente 8 y si son digitos númericos
+                numero_telefono = int(numero_telefono_str)# Pasa de string a integer (número entero) y pasa a la siguiente
                 break
             else:
+                #Si no se ingresaron números o el número de caracteres no es igual a 8, les imprime esto, y pide de nuevo el número
                 print("Numero de telefono inválido. Debe de ser de 8 números y sin espacios")
         except ValueError:
-            print("Carácteres inválidos. Por favor, solo ingrese numeros")
+            print("Carácteres inválidos. Por favor, solo ingrese numeros")# Esto solo es en caso de que haya un error inesperado
     
     while True:
         try:        
-            correo_elec = input("Ingrese el correo electrónico del cliente: ").strip()
+            correo_elec = input("Ingrese el correo electrónico del cliente: ").strip()#Ya sabemos que es el strip
             if not correo_elec:
-                print("No puede haber una entrada de datos vacía")
+                print("No puede haber una entrada de datos vacía") #Aqui sabemos que vuelve a pedir el código si el usuario no ingresó nada
                 continue
-            correo_elec = correo_elec.lower()
+            correo_elec = correo_elec.lower() #Si esta bueno, pasa todo el correo en minusculas
             if "@" not in correo_elec or "." not in correo_elec.split("@")[-1]:
+                #Si el correo no contiene el @ o no contiene el . despues del arroba le sale el mensaje y vuelve a pedir el correo
                 print("Correo electrónico inválido, debe contener @ y un punto después de @")                
                 continue
             else:
                 break
+            #Si todo esta correcto, hace el break para salir de bucle e ir al siguiente
         
         except ValueError:
-            print("Carácteres inválidos")
+            print("Carácteres inválidos") # En caso de errores inesperados
       
     while True:
         try:  
             direccion = input("Ingrese la dirección del cliente: ").strip()
-            if not direccion:
+            if not direccion: #Esto hace lo mismo que los anteriores
                 print("No puede haber una entrada de datos vacía")
                 continue
             else:
-                direccion = direccion.title()
-                break
+                direccion = direccion.title() #Capitaliza la 1ra palabra en caso de que no lo haya sido
+                break# Si todo esta bien, lo manda al sig modulo
         except ValueError:
-            print("Carácteres inválidos")
+            print("Carácteres inválidos")# Solo si hay errores inesperados
             
     for cliente in servicios.service:
         if cliente.identification.lower() == cedula_str.lower():
@@ -159,57 +173,64 @@ def registrar_cliente():
             print("Ya existe un cliente con ese correo electrónico.")
             limpiar_pantalla()
             return
+    #Esa iteración de for hace el trabajo de que si la cédula, número de telefono o el correo del cliente ya esta registrado, si es así no lo permite guardar, evtando duplicados
     
-    registrar = c.Client(nombres, apellidos, cedula_str ,numero_telefono, correo_elec, direccion)
-    servicios.add(registrar)
-    limpiar_pantalla()
+    registrar = c.Client(nombres, apellidos, cedula_str ,numero_telefono, correo_elec, direccion) 
+    #Condensa todo lo que se va a guardar para evitar escribir todo eso en el parentesis del servicios.add()
+    servicios.add(registrar) # Guarda todos los datos de un cliente
+    limpiar_pantalla()#Limpia pantalla luego de finalizar el módulo, para evitar datos anteriores ocupen más espacios
     
 def eliminar_cliente():
     while True:
         try:
             busqueda = input("Ingrese los 2 nombres, los 2 apellidos del cliente a buscar o la cedula: ").strip()
             if not busqueda:
-                print("Debe ingresar el nombre, el apellido o la cédula")
+                print("Debe ingresar el nombre, el apellido o la cédula")# Si no se ingresa nada, hace break y lo saca de la función
                 break
-            buscando_cliente = buscar_cliente(busqueda)
+            buscando_cliente = buscar_cliente(busqueda) # Hace la busqueda cliente y ve si coincide
             if buscando_cliente:
-                servicios.delete(buscando_cliente)
+                servicios.delete(buscando_cliente) #Llama la función delete del dao y elimina los registros de factura
                 facturas_a_eliminar = [factura for factura in registro_factura.state if factura.client.identification == buscando_cliente.identification]
                 for factura in facturas_a_eliminar:
-                    registro_factura.delete(factura)
-                print(f"Cliente {buscando_cliente.name} {buscando_cliente.last_name} eliminado.")
+                    registro_factura.delete(factura) # Elimina al cliente y todos sus datos personales
+                print(f"Cliente {buscando_cliente.name} {buscando_cliente.last_name} eliminado.") #Imprime nombre y apellido del cliente eliminado
                 limpiar_pantalla()
                 break
             else:
-                print("Cliente no encontrado.")
+                print("Cliente no encontrado.") 
+                # En caso de que nombre, apellido, cédula o nombre completo no coincidan en la búsqueda
                 limpiar_pantalla()
                 break
         except ValueError:
-            print("Entrada no válida, intenté de nuevo")
+            print("Entrada no válida, intenté de nuevo")# En caso de que haya error inesperado
             limpiar_pantalla()
             break
             
 def editar_cliente():
      while True:
            try:
-               busqueda = input("Ingrese los 2 nombres, los 2 apellidos del cliente a buscar o la cedula: ").strip()
+               busqueda = input("Ingrese los 2 nombres, los 2 apellidos del cliente a buscar o la cedula: ").strip() 
+               #Busca por nombe, apellido o cédula
                if not busqueda:
                    print("Debe ingresar el nombre, el apellido o la cédula")
                    limpiar_pantalla()
                    break
+               #Hace esto en caos de que no se ingrese nada
                buscando_cliente = buscar_cliente(busqueda)
+               #Hace la busqueda del cliente, si es encontrado hace el siguiente if
                if buscando_cliente:
                         print("Cliente encontrado:")
                         print(buscando_cliente)
                         editar_nuevo_cliente(buscando_cliente)
                         limpiar_pantalla()
                         break
+                    #Imprime los datos del cliente y llama a la función para editar el cliente si todo esta bien sale del bucle y lo manda al menú principal
                else: 
-                   print("Cliente no encontrado")
+                   print("Cliente no encontrado") #Hace esto si lo ingresado no coincide con lo lo registrado en el clientes.bin
                    limpiar_pantalla()
                    break
            except ValueError:
-               print("Error inesperado al ingresar dartos")
+               print("Error inesperado al ingresar datos")#Solo en caso de un error inesperado
                limpiar_pantalla()
                break
 
@@ -220,19 +241,23 @@ def editar_nuevo_cliente(cliente):
     nuevo_numero_telefono = None
     nuevo_correo_elec = None
     nuevo_direccion = None
+    #Inicializa variables temporales para guardar los posibles datos modificados del cliente, construyendo un diccionario con solo los campos que no son None y se actualizan en el objeto cliente.
 
     while True:
         try:
             entrada = input(f"Ingrese los 2 nuevos nombres del cliente [{cliente.name}]: ").strip()
-            if entrada == "":
-                break #Agregue esto si quiero mantener el nombre igual, ahora es agregar a todos
+            if entrada == "": 
+                # Si el usario solo da enter, no realiza ningún cambio y queda igual, lo mismo para todos en los siguientes modulos de esta función
+                break 
             elif  all(part.isalpha() for part in entrada.split()):
-                nuevo_nombre = entrada.title()
+                nuevo_nombre = entrada.lower()
+                nuevo_nombre = nuevo_nombre.title()
                 break
             else:
                 print("Los nombres solo deben contener caracteres alfabéticas")
         except ValueError:
             print("Error, caracteres inválidos")
+            #Hace lo mismo que la función de registrar_cliente con unas cuantas modificaciones, lo mismo va para los siguientes bucles
         
         
     while True:
@@ -314,10 +339,12 @@ def editar_nuevo_cliente(cliente):
             print("Ya existe otro cliente con ese correo electrónico.")
             limpiar_pantalla()
             return
+        #Este verifica si la cédula, el numero de teléfono o el correo electrónico ya esta regsitrado en algún otro cliente
         
-    datos_a_modificar = {}
+    datos_a_modificar = {} # Esta linea crea un diccionario vacío
     if nuevo_nombre:
-        datos_a_modificar['name'] = nuevo_nombre
+        datos_a_modificar['name'] = nuevo_nombre 
+        # Si el usuario escribió un nuevo nombre se agrega al diccionario con la clave 'name', este patrón se repite para todos los demás campos.
     if nuevo_apellido:
         datos_a_modificar['last_name'] = nuevo_apellido
     if nueva_cedula:
@@ -330,6 +357,7 @@ def editar_nuevo_cliente(cliente):
         datos_a_modificar['address'] = nuevo_direccion
 
     servicios.update(cliente, datos_a_modificar)
+    #Hace que mi dao recorra el diccionario y reemplace únicamente esos campos dentro del objeto cliente.
     print("Cliente actualizado con éxito.")
     
 def registrar_pago():
@@ -337,21 +365,22 @@ def registrar_pago():
         try:
             busqueda = input("Ingrese los 2 nombres, los 2 apellidos del cliente a buscar o la cedula:").strip()
             if not busqueda:
-                print("Debe ingresar un nombre, apellido o cédula")
+                print("Debe ingresar un nombre, apellido o cédula")#Si no pone nada, manda este mensaje 
                 continue
-            buscando_cliente = buscar_cliente(busqueda)
-            if buscando_cliente:
+            buscando_cliente = buscar_cliente(busqueda) 
+            # Llama la función buscar_cliente y busca coincidencias del clientes
+            if buscando_cliente:# Si se encuentran coincidencias llama la función registrar pagos
                 print(f"Cliente encontrado: \n {buscando_cliente.name} {buscando_cliente.last_name} {buscando_cliente.identification}")
                 registrar_pago_datos(buscando_cliente) 
                 limpiar_pantalla()
                 break  
             else:
                    print("El cliente no existe o no fue introducido tal y como fue guardado")
-                   continuar = input("¿Desea intentar de nuevo? (s/n): ").strip().lower()
+                   continuar = input("¿Desea intentar de nuevo? (s/n): ").strip().lower() # Si no se encuentra, pide s o n para continuar con la acción
                    if continuar != 's':
                        break
         except ValueError:
-               print("Error inesperado, intente nuevamente")
+               print("Error inesperado, intente nuevamente") # Solo es por si hay un error inesperado
                limpiar_pantalla()
                break
 
@@ -359,24 +388,30 @@ def registrar_pago_datos(cliente):
     while True:
         try:
             pago_str = input("Ingrese el pago realizado por el cliente en córdobas: ").strip().replace(',', '.')
+            #Pide el monto y reemplaza cada coma con un punto, en caso de que el usuario prefiera las comas sobre el punto al representer decimales
             if not pago_str:
                 print("Debe ingresar un monto")
+                #Si no hay nada ingresado, le imprime eso y pide nuevamente el monto
                 continue
             pago = float (pago_str)
+            # hace una variable llamada pago conviertiendo de str a float la variable pago_str
             if pago < 737:
                 print("Pago insuficiente, el pago mínimo del servicio es de 737 córdobas")
+                # Si es insuficiente el pago, imprime el mensaje  y lo pide de nuevo
                 continue
             else: 
-                pago = round(pago, 2) #Voy a mandarlo a redondear hasta 2 decimales, por que demasiados en la lista
-                cambio =  round(pago - 737, 2)
+                pago = round(pago, 2) #Redondea a  2 decimales el pago en caso de que sean muchos
+                cambio =  round(pago - 737, 2)#Hace el calculo de cambio y redondea a 2 decimales
                 descripcion = "Pago de servicio" 
-                fecha = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-                fecha_formateada = fecha.replace(" ", "").replace("/", "").replace(":", "") #Hace que la factura sea unica al concantenar la cedula del cliente y la fecha con lo guiones eliminados
+                fecha = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") 
+                #Formato de fecha, hora, minuto y segundo para almacenar
+                fecha_formateada = fecha.replace(" ", "").replace("/", "").replace(":", "") #Hace que la factura sea unica al concantenar la cedula del cliente y la fecha con lo guiones, las barras y los : eliminados
                 codigo_factura =  f"FAC-{cliente.identification}-{fecha_formateada}"
-                
+                #Concatena la cédula y la fecha formateada 
                 
                 factura = c.Bill(cliente, pago, cambio, descripcion, fecha, codigo_factura)
-                registro_factura.add(factura)
+                #Indica todas las varibles que se deben guardar
+                registro_factura.add(factura) #Los guardan en el facturas.bin
                 
                 cliente.pagos.append({
                     'pago': pago,
@@ -386,110 +421,123 @@ def registrar_pago_datos(cliente):
                 
                 print(f"Pago registrado. Cambio: {cambio:.2f} córdobas. Factura generada: {codigo_factura}")
                 break
+            #Si todo fue hecho bien, muestra el cambio y el código de factura
         except ValueError:
-            print("Error, ingrese un número válido [use punto o coma para decimales si es necesario].")
+            print("Error, ingrese un número válido [use punto o coma para decimales si es necesario].") 
+            #Solo por un error imprevisto
             limpiar_pantalla()
             break
         
 def buscar_cliente(busqueda):
     entrada = busqueda.strip().lower()
+    # Recorre todos los clientes de servicios.service y construye el nombre completo (nombre + apellido) en minúsculas, para hacer búsquedas uniformes.
     if not entrada:
         return None
     for cliente in servicios.service:
-        nombre_completo = f"{cliente.name} {cliente.last_name}".lower()
-        if (entrada == cliente.identification.lower() or
-            entrada == cliente.name.lower() or
-            entrada == cliente.last_name.lower() or
-            entrada in nombre_completo):
-            return cliente
+        nombre_completo = f"{cliente.name} {cliente.last_name}".lower()  
+        if (entrada == cliente.identification.lower() or #coincidencie exacta con la cédula
+            entrada == cliente.name.lower() or # coincidencia exacta con el nombre
+            entrada == cliente.last_name.lower() or #coincdencia exacta con el apellidod
+            entrada in nombre_completo): #concidencia parcial del nombre
+            return cliente #Devuelve el cliente si encuentra coincidencia
     return None
 
 def buscar_imprimir_factura():
     while True:
         try:
             print("""
-1. Buscar facturas por nombre, apellido o cédula del cliente
+1. Buscar facturas por nombre, apellido o cédula del cliente 
 2. Buscar facturas por código
 3. Volver al menú""")
+            #Muestra 3 opciones
             opcion = int(input("Ingrese el número de la acción a realizar: "))
             
-            if opcion == 1:
-                busqueda = input("Ingrese los 2 nombres, los 2 apellidos del cliente a buscar o la cedula: ").strip()
+            if opcion == 1: # Si la opcion es 1
+                busqueda = input("Ingrese los 2 nombres, los 2 apellidos del cliente a buscar o la cedula: ").strip() 
+                #Pide nombre, apellido o cédula
                 if not busqueda:
-                    print("Debe ingresar un dato para buscar.")
+                    print("Debe ingresar un dato para buscar.")#Si no hay nada ingresado, manda este mensaje e inicia de nuevo el bucle con el continue
                     continue
                 
-                buscando_cliente = buscar_cliente(busqueda)
-                if buscando_cliente:
+                buscando_cliente = buscar_cliente(busqueda) #Hace la búsqueda del cliente
+                if buscando_cliente: # Si es encontrada hace lo siguiente
                     print("Cliente encontrado:")
-                    print(f"{buscando_cliente.name} {buscando_cliente.last_name}  -  {buscando_cliente.identification}")
+                    print(f"{buscando_cliente.name} {buscando_cliente.last_name}  -  {buscando_cliente.identification}") 
                     print("Facturas del cliente: ")
                     
                     facturas_cliente = [factura for factura in registro_factura.state if factura.client.identification == buscando_cliente.identification]
-                    
+                    #Recorre todas las facturas almacenadas en registro_factura.state. Toma cada factura y la evalúa con  con la cédula del cliente que se encontró con buscar_cliente.
                     if facturas_cliente:
                         for factura in facturas_cliente:
-                            print(factura)   
+                            print(factura)   #Imprime las facturas "filtrada"
                     else:
-                        print("Este cliente no tiene facturas registradas.")
+                        print("Este cliente no tiene facturas registradas.") #En caso de que no haya facturas a nombre de ese cliente
                 else:
-                    print("Cliente no encontrado.")
+                    print("Cliente no encontrado.")#En caso de que no se haya encontrado el cliente
                     
                 limpiar_pantalla()
 
-            elif opcion == 2:
-                codigo = input("Ingrese el código de la factura a buscar: ").strip()
+            elif opcion == 2: # Si la opción fue 2
+                codigo = input("Ingrese el código de la factura a buscar: ").strip() #Pide el código de la facturas
                 if not codigo:
                     print("Debe ingresar un código para buscar.")
+                    #Si no pusieron nada, imprime esta linea y pide de nuevo
                     continue
                 
                 factura_encontrada = next((f for f in registro_factura.state if f.code == codigo), None)
+                #Recorre todas las facturas guardadas en registro_factura.state y va produciendo solo aquellas cuyo código f.code coincide exactamente con el codigo que el usuario introdujo. La función next() obtiene el primer elemento de ese generador. Si no encuentra ninguna factura que coincida, devuelve el valor por defecto None.
 
                 if factura_encontrada:
                     print("\nFactura encontrada:")
-                    print(factura_encontrada)
+                    print(factura_encontrada) #Imprime la factura con el código introducido y sus detalles
                 else:
-                    print("No se encontró ninguna factura con ese código.")
+                    print("No se encontró ninguna factura con ese código.")#Si no se encontró, imprime esto y llama a limpiar pantalla
                     
                 limpiar_pantalla()
                 
-            elif opcion == 3:
-                print("Volviendo al menú principal...")
+            elif opcion == 3: #Si fuera 3
+                print("Volviendo al menú principal...") #Hace break y lo manda al menu principal
                 limpiar_pantalla()
                 break
 
             else:
-                print("Opción inválida, intente de nuevo.")
+                print("Opción inválida, intente de nuevo.")# Imprime en caso de que se ingrese un dato no permitido
 
         except ValueError:
-            print("Entrada inválida, por favor ingrese un número.")
+            print("Entrada inválida, por favor ingrese un número.") #Solo en caso de algún error inesperado
             
 def generar_reporte_financiero():
-    total_ingresos = 0
+    total_ingresos = 0 # Inicia contadores de cambios y de ingresos en 0
     total_cambios = 0
-    total_facturas = len(registro_factura.state)
+    total_facturas = len(registro_factura.state) #Lee la cantidad de facturas que hay
     
     if total_facturas == 0:
-        print("No hay facturas registradas hasta el momento.")
+        print("No hay facturas registradas hasta el momento.")# Si no hay facturas, imprime esto y lo manda al menú
         limpiar_pantalla()
         return
     
     print("\n=== Reporte Financiero ===")
-    print(f"Total de facturas emitidas: {total_facturas}")
+    print(f"Total de facturas emitidas: {total_facturas}") # Muestra el total de facturas contadas
     print("\nDetalle de facturas:")
 
     for factura in registro_factura.state:
         print(factura)
         total_ingresos += factura.payment
         total_cambios += factura.change
+        #Recorre cada elemento dentro de registro_factura.state
+        #total_ingresos += factura.payment: va sumando cada pago registrado en cada factura para calcular el total recaudado.
+        #total_cambios += factura.change: va sumando los cambios devueltos a los clientes, para saber cuánto cambio se entregó.
         
     print("\n=== Resumen ===")
-    print(f"Total recaudado (sin cambios): {total_ingresos:.2f} córdobas")
+    print(f"Total recaudado (sin cambios): {total_ingresos:.2f} córdobas") 
     print(f"Total de cambios entregados: {total_cambios:.2f} córdobas")
     print(f"Ingreso neto: {total_ingresos - total_cambios:.2f} córdobas")
+    #Lo imprime con formato de 2 decimales el total recaudado, el cambio y el ingreso
     
     limpiar_pantalla()
             
 def limpiar_pantalla():
     input(f"Presione enter para continuar:")
     os.system('cls' if os.name == 'nt' else 'clear')
+    # El input sirve para darle tiempo de leer la pantalla antes de limpiar al presionar enter
+    #Esto limpia la consola, para que la siguiente interacción comience en limpio
