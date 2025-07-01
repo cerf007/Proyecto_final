@@ -56,6 +56,7 @@ def main():
                             registrar_usuario()
                         elif opcion == 9:
                             mostrar_usuarios()
+                            limpiar_pantalla()
                         elif opcion == 10:
                             eliminar_usuario()
                         elif opcion == 11:
